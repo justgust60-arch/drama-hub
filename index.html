@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DramaHub - C-Drama & K-Drama Streaming Dashboard</title>
+    <title>DramaHub - C-Drama, K-Drama, Action & Anime Streaming Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -54,9 +54,13 @@
                     <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-rose-400 bg-slate-800/80 flex items-center gap-1.5">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i> All Dramas
                     </button>
-                    <!-- Action Dramas Button -->
+                    <!-- Action Dramas Tab -->
                     <button id="nav-action" onclick="setActiveTab('action')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
                         <span class="inline-block w-2 h-2 rounded-full bg-red-500"></span> Action Dramas
+                    </button>
+                    <!-- Anime Tab -->
+                    <button id="nav-anime" onclick="setActiveTab('anime')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span> Anime
                     </button>
                     <button id="nav-china" onclick="setActiveTab('china')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
                         <span class="inline-block w-2 h-2 rounded-full bg-cyan-400"></span> C-Dramas
@@ -92,6 +96,7 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
                 <button onclick="setActiveTab('all'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-800/80">All</button>
                 <button onclick="setActiveTab('action'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-red-400 bg-red-950/40">Action</button>
+                <button onclick="setActiveTab('anime'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-amber-400 bg-amber-950/40">Anime</button>
                 <button onclick="setActiveTab('china'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-cyan-400 bg-cyan-950/40">C-Drama</button>
                 <button onclick="setActiveTab('korea'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-purple-400 bg-purple-950/40">K-Drama</button>
             </div>
@@ -109,7 +114,7 @@
                         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Featured Release
                     </span>
                     <h1 id="heroTitle" class="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">DramaHub Streaming</h1>
-                    <p id="heroDesc" class="text-slate-300 text-xs sm:text-sm md:text-base line-clamp-2">Stream your favorite C-Dramas, K-Dramas, and Action series synced live via Firebase cloud database.</p>
+                    <p id="heroDesc" class="text-slate-300 text-xs sm:text-sm md:text-base line-clamp-2">Stream your favorite Anime, Action, C-Dramas, and K-Dramas synced live via Firebase cloud database.</p>
                     <div class="flex flex-wrap items-center gap-2.5 pt-1">
                         <button onclick="setActiveTab('upload')" class="min-h-[44px] px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm border border-slate-700 flex items-center gap-2">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Episode Links
@@ -121,7 +126,7 @@
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                 <div>
                     <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                        All Dramas <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+                        All Shows <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
                     </h2>
                 </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
@@ -140,8 +145,8 @@
             
             <div id="emptyState" class="hidden text-center py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800 p-4">
                 <i data-lucide="film" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
-                <h3 class="text-lg font-medium text-slate-300">No dramas found</h3>
-                <button onclick="setActiveTab('upload')" class="mt-4 px-4 py-2.5 bg-rose-600 text-white rounded-xl text-sm font-medium">Upload New Drama</button>
+                <h3 class="text-lg font-medium text-slate-300">No shows found</h3>
+                <button onclick="setActiveTab('upload')" class="mt-4 px-4 py-2.5 bg-rose-600 text-white rounded-xl text-sm font-medium">Upload New Show</button>
             </div>
         </section>
 
@@ -155,15 +160,15 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-                <!-- Add New Drama -->
+                <!-- Add New Drama / Anime -->
                 <div class="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                        <i data-lucide="plus-circle" class="w-5 h-5 text-rose-400"></i> Step 1: Add New Drama
+                        <i data-lucide="plus-circle" class="w-5 h-5 text-rose-400"></i> Step 1: Add New Show
                     </h3>
                     <form id="newDramaForm" onsubmit="handleCreateDrama(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Drama Title</label>
-                            <input type="text" id="addTitle" required placeholder="e.g. Action Movie Title" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
+                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Title</label>
+                            <input type="text" id="addTitle" required placeholder="e.g. Attack on Titan or Action Movie" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
                         </div>
                         <div class="grid grid-cols-2 gap-3.5">
                             <div>
@@ -171,21 +176,23 @@
                                 <select id="addCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                                     <option value="china">China Drama</option>
                                     <option value="korea">Korea Drama</option>
+                                    <option value="action">Action Drama</option>
+                                    <option value="anime">Anime</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Genre (e.g. Action)</label>
-                                <input type="text" id="addGenre" required placeholder="Action" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Genre</label>
+                                <input type="text" id="addGenre" required placeholder="Action / Fantasy" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-3.5">
                             <div>
                                 <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Total Episodes</label>
-                                <input type="number" id="addTotalEps" min="1" max="150" value="1" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <input type="number" id="addTotalEps" min="1" max="150" value="12" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Rating</label>
-                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="8.5" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.0" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                             </div>
                         </div>
                         <div>
@@ -194,9 +201,9 @@
                         </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Synopsis</label>
-                            <textarea id="addDesc" rows="3" placeholder="Drama description..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100"></textarea>
+                            <textarea id="addDesc" rows="3" placeholder="Show description..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100"></textarea>
                         </div>
-                        <button type="submit" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-sm shadow-lg shadow-rose-600/20">Create Drama Series</button>
+                        <button type="submit" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-sm shadow-lg shadow-rose-600/20">Create Show Series</button>
                     </form>
                 </div>
 
@@ -206,7 +213,7 @@
                         <i data-lucide="upload" class="w-5 h-5 text-indigo-400"></i> Step 2: Upload YouTube / Video Links
                     </h3>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Drama</label>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Show</label>
                         <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-slate-100 font-medium"></select>
                     </div>
 
@@ -231,7 +238,7 @@
     <div id="dramaModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4">
         <div class="relative w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[96vh] flex flex-col">
             <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-800 bg-slate-900 sticky top-0 z-20">
-                <h3 id="modalTitle" class="text-lg font-bold text-white truncate">Drama Title</h3>
+                <h3 id="modalTitle" class="text-lg font-bold text-white truncate">Show Title</h3>
                 <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <div class="overflow-y-auto p-4 sm:p-6 space-y-6 flex-1">
@@ -319,6 +326,7 @@
             });
             if(tab === 'all') document.getElementById('nav-all')?.classList.add('text-rose-400', 'bg-slate-800/80');
             if(tab === 'action') document.getElementById('nav-action')?.classList.add('text-rose-400', 'bg-slate-800/80');
+            if(tab === 'anime') document.getElementById('nav-anime')?.classList.add('text-rose-400', 'bg-slate-800/80');
             if(tab === 'china') document.getElementById('nav-china')?.classList.add('text-rose-400', 'bg-slate-800/80');
             if(tab === 'korea') document.getElementById('nav-korea')?.classList.add('text-rose-400', 'bg-slate-800/80');
             if(tab === 'upload') document.getElementById('nav-upload')?.classList.add('text-rose-400', 'bg-slate-800/80');
@@ -332,7 +340,8 @@
             grid.innerHTML = '';
 
             let list = Object.values(window.dramasData);
-            if (window.currentTab === 'action') list = list.filter(d => d.genre && d.genre.toLowerCase().includes('action'));
+            if (window.currentTab === 'action') list = list.filter(d => d.category === 'action' || (d.genre && d.genre.toLowerCase().includes('action')));
+            if (window.currentTab === 'anime') list = list.filter(d => d.category === 'anime' || (d.genre && d.genre.toLowerCase().includes('anime')));
             if (window.currentTab === 'china') list = list.filter(d => d.category === 'china');
             if (window.currentTab === 'korea') list = list.filter(d => d.category === 'korea');
             if (genreVal !== 'all') list = list.filter(d => d.genre && d.genre.includes(genreVal));
@@ -342,13 +351,19 @@
             document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
 
             list.forEach(drama => {
+                let badgeText = 'Drama';
+                if (drama.category === 'china') badgeText = 'C-Drama';
+                else if (drama.category === 'korea') badgeText = 'K-Drama';
+                else if (drama.category === 'action') badgeText = 'Action';
+                else if (drama.category === 'anime') badgeText = 'Anime';
+
                 const card = document.createElement('div');
                 card.className = 'glass-panel rounded-xl overflow-hidden border border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group flex flex-col';
                 card.onclick = () => openDramaDetail(drama.id);
                 card.innerHTML = `
                     <div class="relative aspect-[3/4] overflow-hidden bg-slate-900">
                         <img src="${drama.poster || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
-                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950/80 text-rose-400 border border-slate-700">${drama.category === 'china' ? 'C-Drama' : 'K-Drama'}</span>
+                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950/80 text-rose-400 border border-slate-700">${badgeText}</span>
                     </div>
                     <div class="p-3 flex flex-col flex-1 justify-between">
                         <div>
@@ -446,8 +461,8 @@
             const title = document.getElementById('addTitle').value;
             const category = document.getElementById('addCategory').value;
             const genre = document.getElementById('addGenre').value;
-            const totalEps = parseInt(document.getElementById('addTotalEps').value) || 1;
-            const rating = parseFloat(document.getElementById('addRating').value) || 8.5;
+            const totalEps = parseInt(document.getElementById('addTotalEps').value) || 12;
+            const rating = parseFloat(document.getElementById('addRating').value) || 9.0;
             const poster = document.getElementById('addPoster').value || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400';
             const desc = document.getElementById('addDesc').value;
 
@@ -455,7 +470,7 @@
             const newDrama = { id: newId, title, category, genre, totalEps, rating, poster, desc, episodes: {1: ""} };
 
             set(ref(db, 'dramas/' + newId), newDrama).then(() => {
-                alert('Drama created successfully in Cloud Database!');
+                alert('Show created successfully in Cloud Database!');
                 document.getElementById('newDramaForm').reset();
                 window.setActiveTab('all');
             });
