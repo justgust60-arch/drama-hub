@@ -67,6 +67,9 @@
                     <button id="nav-korea" onclick="setActiveTab('korea')" class="nav-btn px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span> K-Drama
                     </button>
+                    <button id="nav-favorites" onclick="setActiveTab('favorites')" class="nav-btn px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1">
+                        <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i> Favorites
+                    </button>
                     
                     <button id="nav-upload" onclick="setActiveTab('upload')" class="nav-btn hidden px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1">
                         <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> Admin
@@ -110,6 +113,7 @@
                 <button onclick="setActiveTab('cartoon'); toggleMobileMenu();" class="text-center px-3 py-2 rounded-xl text-xs font-semibold text-emerald-400 bg-emerald-950/40">Cartoon</button>
                 <button onclick="setActiveTab('china'); toggleMobileMenu();" class="text-center px-3 py-2 rounded-xl text-xs font-semibold text-cyan-400 bg-cyan-950/40">C-Drama</button>
                 <button onclick="setActiveTab('korea'); toggleMobileMenu();" class="text-center px-3 py-2 rounded-xl text-xs font-semibold text-purple-400 bg-purple-950/40">K-Drama</button>
+                <button onclick="setActiveTab('favorites'); toggleMobileMenu();" class="text-center px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 bg-rose-950/40">Favorites</button>
                 <button id="mobileNavUpload" onclick="setActiveTab('upload'); toggleMobileMenu();" class="hidden text-center px-3 py-2 rounded-xl text-xs font-semibold text-rose-400 bg-rose-950/40">Admin Upload</button>
             </div>
         </div>
@@ -135,7 +139,7 @@
             </div>
 
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <h2 id="sectionTitle" class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
                     All Shows <span id="dramaCount" class="text-xs font-normal px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
                 </h2>
                 <select id="genreFilter" onchange="currentPaginationPage=1; renderCatalog()" class="bg-slate-900 text-xs border border-slate-700 rounded-xl px-3 py-2 text-slate-300">
@@ -329,6 +333,9 @@
         window.isAdminLoggedIn = false;
         const ITEMS_PER_PAGE = 12;
 
+        // Load Favorites from localStorage
+        window.favorites = JSON.parse(localStorage.getItem('dramahub_favorites') || '[]');
+
         window.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('dramahub_admin_auth') === 'true') {
                 window.isAdminLoggedIn = true;
@@ -416,6 +423,25 @@
             window.currentPaginationPage = 1;
             document.getElementById('catalogSection').classList.toggle('hidden', tab === 'upload');
             document.getElementById('uploadSection').classList.toggle('hidden', tab !== 'upload');
+            
+            const titleEl = document.getElementById('sectionTitle');
+            if(tab === 'favorites') {
+                titleEl.innerHTML = `Favorite Shows <span id="dramaCount" class="text-xs font-normal px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>`;
+            } else {
+                titleEl.innerHTML = `All Shows <span id="dramaCount" class="text-xs font-normal px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>`;
+            }
+            renderCatalog();
+        }
+
+        window.toggleFavorite = function(event, id) {
+            event.stopPropagation();
+            const index = window.favorites.indexOf(id);
+            if(index > -1) {
+                window.favorites.splice(index, 1);
+            } else {
+                window.favorites.push(id);
+            }
+            localStorage.setItem('dramahub_favorites', JSON.stringify(window.favorites));
             renderCatalog();
         }
 
@@ -426,11 +452,28 @@
             grid.innerHTML = '';
 
             let list = Object.values(window.dramasData);
-            if (window.currentTab === 'action') list = list.filter(d => d.category === 'action' || d.genre?.toLowerCase().includes('action'));
-            if (window.currentTab === 'anime') list = list.filter(d => d.category === 'anime' || d.genre?.toLowerCase().includes('anime'));
-            if (window.currentTab === 'cartoon') list = list.filter(d => d.category === 'cartoon' || d.genre?.toLowerCase().includes('cartoon'));
-            if (window.currentTab === 'china') list = list.filter(d => d.category === 'china');
-            if (window.currentTab === 'korea') list = list.filter(d => d.category === 'korea');
+
+            // Sort newest first (reverse chronological by timestamp ID or created order)
+            list.sort((a, b) => {
+                const idA = a.id.startsWith('d_') ? parseInt(a.id.split('_')[1]) : 0;
+                const idB = b.id.startsWith('d_') ? parseInt(b.id.split('_')[1]) : 0;
+                return idB - idA;
+            });
+
+            if (window.currentTab === 'favorites') {
+                list = list.filter(d => window.favorites.includes(d.id));
+            } else if (window.currentTab === 'action') {
+                list = list.filter(d => d.category === 'action' || d.genre?.toLowerCase().includes('action'));
+            } else if (window.currentTab === 'anime') {
+                list = list.filter(d => d.category === 'anime' || d.genre?.toLowerCase().includes('anime'));
+            } else if (window.currentTab === 'cartoon') {
+                list = list.filter(d => d.category === 'cartoon' || d.genre?.toLowerCase().includes('cartoon'));
+            } else if (window.currentTab === 'china') {
+                list = list.filter(d => d.category === 'china');
+            } else if (window.currentTab === 'korea') {
+                list = list.filter(d => d.category === 'korea');
+            }
+
             if (genreVal !== 'all') list = list.filter(d => d.genre?.includes(genreVal));
             if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal));
 
@@ -446,6 +489,7 @@
 
             paginatedList.forEach(drama => {
                 let badgeText = drama.category?.toUpperCase() || 'DRAMA';
+                const isFav = window.favorites.includes(drama.id);
                 const card = document.createElement('div');
                 card.className = 'glass-panel rounded-xl overflow-hidden border border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group flex flex-col';
                 card.onclick = () => openDramaDetail(drama.id);
@@ -453,6 +497,9 @@
                     <div class="relative aspect-[3/4] overflow-hidden bg-slate-900">
                         <img src="${drama.poster || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-all">
                         <span class="absolute top-2 left-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-slate-950/80 text-rose-400 border border-slate-700">${badgeText}</span>
+                        <button onclick="toggleFavorite(event, '${drama.id}')" class="absolute top-2 right-2 p-1.5 rounded-full bg-slate-950/70 hover:bg-slate-950 text-white transition-all">
+                            <i data-lucide="heart" class="w-4 h-4 ${isFav ? 'fill-rose-500 text-rose-500' : 'text-slate-300'}"></i>
+                        </button>
                     </div>
                     <div class="p-2.5 flex flex-col flex-1 justify-between">
                         <div>
