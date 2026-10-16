@@ -47,7 +47,7 @@
                     </span>
                 </div>
 
-                <!-- Clean Nav Menu (No Line Wrap) -->
+                <!-- Clean Nav Menu -->
                 <nav class="hidden lg:flex items-center space-x-1 shrink-0">
                     <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-rose-400 bg-slate-800/80 flex items-center gap-1">
                         <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i> All
@@ -83,7 +83,7 @@
                             class="w-full pl-8 pr-3 py-1.5 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500">
                     </div>
 
-                    <!-- Theme Switcher Dropdown -->
+                    <!-- Theme Switcher -->
                     <select id="themeSelector" onchange="changeTheme(this.value)" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-300">
                         <option value="dark">🌙 Dark</option>
                         <option value="pink">🌸 Pink</option>
@@ -442,7 +442,7 @@
             if (window.currentPaginationPage < 1) window.currentPaginationPage = 1;
 
             const startIndex = (window.currentPaginationPage - 1) * ITEMS_PER_PAGE;
-            paginatedList = list.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+            const paginatedList = list.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
             paginatedList.forEach(drama => {
                 let badgeText = drama.category?.toUpperCase() || 'DRAMA';
