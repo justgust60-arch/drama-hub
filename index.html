@@ -12,15 +12,7 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: '#fff1f2',
-                            100: '#ffe4e6',
-                            500: '#e11d48',
-                            600: '#e11d48',
-                            700: '#be123c',
-                            800: '#9f1239',
-                            900: '#881337',
-                        },
+                        brand: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#e11d48', 600: '#e11d48', 700: '#be123c', 800: '#9f1239', 900: '#881337' },
                         kdrama: '#a855f7',
                         cdrama: '#06b6d4'
                     }
@@ -35,34 +27,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
-        }
-        /* Custom scrollbars */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-        .glow-effect {
-            box-shadow: 0 0 25px -5px rgba(225, 29, 72, 0.3);
-        }
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
 <body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-rose-500 selection:text-white overflow-x-hidden">
@@ -71,8 +41,6 @@
     <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 gap-2 sm:gap-4">
-                
-                <!-- Logo & Brand -->
                 <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="setActiveTab('all')">
                     <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
                         <i data-lucide="tv" class="w-5 h-5 sm:w-6 sm:h-6"></i>
@@ -82,52 +50,46 @@
                     </span>
                 </div>
 
-                <!-- Desktop Navigation Tabs -->
                 <nav class="hidden lg:flex items-center space-x-1">
-                    <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-rose-400 bg-slate-800/80 flex items-center gap-1.5">
+                    <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-rose-400 bg-slate-800/80 flex items-center gap-1.5">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i> All Dramas
                     </button>
-                    <button id="nav-china" onclick="setActiveTab('china')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
+                    <button id="nav-china" onclick="setActiveTab('china')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
                         <span class="inline-block w-2 h-2 rounded-full bg-cyan-400"></span> C-Dramas
                     </button>
-                    <button id="nav-korea" onclick="setActiveTab('korea')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
+                    <button id="nav-korea" onclick="setActiveTab('korea')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
                         <span class="inline-block w-2 h-2 rounded-full bg-purple-400"></span> K-Dramas
                     </button>
-                    <button id="nav-upload" onclick="setActiveTab('upload')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
+                    <button id="nav-upload" onclick="setActiveTab('upload')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
                         <i data-lucide="upload-cloud" class="w-4 h-4"></i> Admin / Upload
                     </button>
                 </nav>
 
-                <!-- Search Input Bar -->
                 <div class="flex-1 max-w-xs relative hidden sm:block">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </div>
                     <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search dramas, genre..." 
-                        class="w-full pl-9 pr-4 py-2 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition-all">
+                        class="w-full pl-9 pr-4 py-2 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500">
                 </div>
 
-                <!-- Mobile Menu Button -->
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 focus:outline-none min-w-[44px] min-h-[44px] flex items-center justify-center">
+                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Navigation Drawer -->
-        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 bg-slate-900/95 backdrop-blur-xl px-4 pt-3 pb-5 space-y-2.5">
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 bg-slate-900/95 px-4 pt-3 pb-5 space-y-2.5">
             <div class="relative my-1 sm:hidden">
                 <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
                 <input type="text" id="mobileSearchInput" oninput="handleSearchMobile()" placeholder="Search dramas..." 
-                    class="w-full pl-9 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-slate-200 placeholder-slate-400">
+                    class="w-full pl-9 pr-4 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-slate-200">
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
-                <button onclick="setActiveTab('all'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-800/80 hover:bg-slate-700 border border-slate-700/50">All Dramas</button>
-                <button onclick="setActiveTab('china'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-cyan-400 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/40">C-Dramas</button>
-                <button onclick="setActiveTab('korea'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-purple-400 bg-purple-950/40 hover:bg-purple-900/50 border border-purple-800/40">K-Dramas</button>
-                <button onclick="setActiveTab('upload'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-400 bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/40 flex items-center justify-center gap-1">
-                    <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> Admin Upload
-                </button>
+                <button onclick="setActiveTab('all'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-800/80">All Dramas</button>
+                <button onclick="setActiveTab('china'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-cyan-400 bg-cyan-950/40">C-Dramas</button>
+                <button onclick="setActiveTab('korea'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-purple-400 bg-purple-950/40">K-Dramas</button>
+                <button onclick="setActiveTab('upload'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-400 bg-rose-950/40 flex items-center justify-center gap-1">Admin Upload</button>
             </div>
         </div>
     </header>
@@ -135,41 +97,34 @@
     <!-- Main Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
 
-        <!-- DASHBOARD VIEW: Catalog / Grid -->
+        <!-- CATALOG SECTION -->
         <section id="catalogSection" class="space-y-6 sm:space-y-8">
-            
-            <!-- Hero Spotlight Banner -->
             <div id="heroBanner" class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-rose-950 to-indigo-950 border border-slate-800 p-5 sm:p-8 md:p-10 shadow-2xl">
-                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay"></div>
                 <div class="relative z-10 max-w-2xl space-y-3 sm:space-y-4">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30">
                         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Featured Release
                     </span>
-                    <h1 id="heroTitle" class="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight sm:leading-none">The King Kong: Eternal Empire</h1>
-                    <p id="heroDesc" class="text-slate-300 text-xs sm:text-sm md:text-base line-clamp-2 sm:line-clamp-3">An epic fantasy drama following the ancient guardians as they defend the realm across 40 full thrilling episodes with custom uploads ready to stream.</p>
-                    <div class="flex flex-wrap items-center gap-2.5 pt-1 sm:pt-2">
-                        <button id="heroPlayBtn" onclick="openDramaDetail('d1')" class="min-h-[44px] px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-rose-600/30 transition-all transform hover:-translate-y-0.5 w-full sm:w-auto">
+                    <h1 id="heroTitle" class="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">The King Kong: Eternal Empire</h1>
+                    <p id="heroDesc" class="text-slate-300 text-xs sm:text-sm md:text-base line-clamp-2">An epic fantasy drama synced instantly via Firebase cloud database.</p>
+                    <div class="flex flex-wrap items-center gap-2.5 pt-1">
+                        <button id="heroPlayBtn" onclick="openDramaDetail('d1')" class="min-h-[44px] px-6 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-rose-600/30">
                             <i data-lucide="play" class="w-4 h-4 fill-white"></i> Watch Now
                         </button>
-                        <button onclick="setActiveTab('upload')" class="min-h-[44px] px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-medium text-xs sm:text-sm border border-slate-700/80 flex items-center justify-center gap-2 transition-all w-full sm:w-auto">
+                        <button onclick="setActiveTab('upload')" class="min-h-[44px] px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm border border-slate-700 flex items-center gap-2">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Episode Links
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Filter & Sorting Bar -->
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
                 <div>
-                    <h2 id="sectionTitle" class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+                    <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
                         All Dramas <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
                     </h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Browse through complete Korean and Chinese series</p>
                 </div>
-
                 <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <!-- Genre Filter Dropdown -->
-                    <select id="genreFilter" onchange="applyFilters()" class="flex-1 sm:flex-initial bg-slate-900 text-xs sm:text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    <select id="genreFilter" onchange="renderCatalog()" class="flex-1 sm:flex-initial bg-slate-900 text-xs sm:text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-300">
                         <option value="all">All Genres</option>
                         <option value="Action">Action</option>
                         <option value="Fantasy">Fantasy</option>
@@ -177,873 +132,385 @@
                         <option value="Comedy">Comedy</option>
                         <option value="Historical">Historical</option>
                     </select>
-
-                    <!-- Sort Filter Dropdown -->
-                    <select id="sortBy" onchange="applyFilters()" class="flex-1 sm:flex-initial bg-slate-900 text-xs sm:text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-300 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                        <option value="latest">Newest Added</option>
-                        <option value="rating">Top Rated</option>
-                        <option value="episodes">Most Episodes</option>
-                    </select>
                 </div>
             </div>
 
-            <!-- Fully Responsive Drama Grid -->
-            <div id="dramaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-5">
-                <!-- Cards dynamically populated via JS -->
-            </div>
-
-            <!-- Empty State -->
-            <div id="emptyState" class="hidden text-center py-12 sm:py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800 p-4">
-                <i data-lucide="film" class="w-10 h-10 sm:w-12 sm:h-12 text-slate-600 mx-auto mb-3"></i>
-                <h3 class="text-base sm:text-lg font-medium text-slate-300">No dramas found</h3>
-                <p class="text-slate-500 text-xs sm:text-sm mt-1">Try adjusting your search terms or genre filter, or add a new drama.</p>
-                <button onclick="setActiveTab('upload')" class="mt-4 px-4 py-2.5 bg-rose-600 text-white rounded-xl text-xs sm:text-sm font-medium hover:bg-rose-500 min-h-[44px]">Upload New Drama</button>
+            <div id="dramaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-5"></div>
+            
+            <div id="emptyState" class="hidden text-center py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800 p-4">
+                <i data-lucide="film" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
+                <h3 class="text-lg font-medium text-slate-300">No dramas found</h3>
+                <button onclick="setActiveTab('upload')" class="mt-4 px-4 py-2.5 bg-rose-600 text-white rounded-xl text-sm font-medium">Upload New Drama</button>
             </div>
         </section>
 
-        <!-- ADMIN / UPLOAD MANAGEMENT VIEW -->
+        <!-- ADMIN / UPLOAD SECTION -->
         <section id="uploadSection" class="hidden space-y-6 sm:space-y-8">
             <div class="border-b border-slate-800 pb-4">
                 <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                    <i data-lucide="database" class="w-5 h-5 sm:w-6 sm:h-6 text-rose-500"></i> Drama & Episode Management Panel
+                    <i data-lucide="database" class="w-6 h-6 text-rose-500"></i> Cloud Firebase Management Panel
                 </h2>
-                <p class="text-slate-400 text-xs sm:text-sm mt-1">Create series (e.g. "The King Kong" with 40 eps or "Monkey" with 30 eps) and manage episode video links from Ep 1 to Ep N.</p>
+                <p class="text-slate-400 text-xs sm:text-sm mt-1">Changes made here are synced live to the cloud and visible to your friends instantly.</p>
             </div>
 
-            <!-- Dashboard Responsive Grid Layout -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-                
-                <!-- Left Form: Create New Drama -->
+                <!-- Add New Drama -->
                 <div class="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                            <i data-lucide="plus-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-rose-400"></i> Step 1: Add New Drama
-                        </h3>
-                        <span class="text-[11px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full border border-rose-500/30 font-semibold">New Series</span>
-                    </div>
-
+                    <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i data-lucide="plus-circle" class="w-5 h-5 text-rose-400"></i> Step 1: Add New Drama
+                    </h3>
                     <form id="newDramaForm" onsubmit="handleCreateDrama(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Drama Title</label>
-                            <input type="text" id="addTitle" required placeholder="e.g. The King Kong or Monkey" 
-                                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Drama Title</label>
+                            <input type="text" id="addTitle" required placeholder="e.g. The King Kong" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
                         </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        <div class="grid grid-cols-2 gap-3.5">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Category</label>
-                                <select id="addCategory" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Category</label>
+                                <select id="addCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                                     <option value="china">China Drama</option>
                                     <option value="korea">Korea Drama</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Genre</label>
-                                <input type="text" id="addGenre" required placeholder="e.g. Fantasy / Action" 
-                                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Genre</label>
+                                <input type="text" id="addGenre" required placeholder="Fantasy / Action" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                             </div>
                         </div>
-
                         <div class="grid grid-cols-2 gap-3.5">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Total Episodes</label>
-                                <input type="number" id="addTotalEps" min="1" max="150" value="30" required 
-                                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
-                                <span class="text-[10px] text-slate-500 mt-1 block">e.g. 40 or 30 episodes</span>
+                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Total Episodes</label>
+                                <input type="number" id="addTotalEps" min="1" max="150" value="30" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Initial Rating</label>
-                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.2" required 
-                                    class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Rating</label>
+                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.2" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
                             </div>
                         </div>
-
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Cover Poster Image URL</label>
-                            <input type="url" id="addPoster" placeholder="https://images.unsplash.com/..." 
-                                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500">
+                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Cover Image URL</label>
+                            <input type="url" id="addPoster" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
                         </div>
-
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Synopsis / Description</label>
-                            <textarea id="addDesc" rows="3" placeholder="Enter drama summary or story detail..." 
-                                class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
+                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Synopsis</label>
+                            <textarea id="addDesc" rows="3" placeholder="Drama description..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100"></textarea>
                         </div>
-
-                        <button type="submit" class="w-full min-h-[44px] py-3 bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-semibold rounded-xl text-sm shadow-lg shadow-rose-600/20 transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Create Drama Series
-                        </button>
+                        <button type="submit" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-sm shadow-lg shadow-rose-600/20">Create Drama Series</button>
                     </form>
                 </div>
 
-                <!-- Right Form: Upload / Batch Manage Episodes -->
+                <!-- Manage Episodes -->
                 <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
-                        <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                            <i data-lucide="upload" class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-400"></i> Step 2: Upload Episodes (1 to N)
-                        </h3>
-                        <span id="selectedDramaBadge" class="text-xs bg-indigo-500/20 text-indigo-300 px-2.5 py-1 rounded-full border border-indigo-500/30 font-medium self-start sm:self-auto">
-                            Select Drama Below
-                        </span>
-                    </div>
-
-                    <!-- Target Drama Selection Dropdown -->
+                    <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i data-lucide="upload" class="w-5 h-5 text-indigo-400"></i> Step 2: Upload YouTube / Video Links
+                    </h3>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">Select Drama to Manage Video Links</label>
-                        <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-3 text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <!-- Populated dynamically -->
-                        </select>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Drama</label>
+                        <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-slate-100 font-medium"></select>
                     </div>
 
-                    <!-- Quick Batch Link Generator Utility -->
-                    <div class="p-3.5 sm:p-4 bg-slate-900/80 rounded-xl border border-slate-800 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <label class="text-xs font-bold text-slate-300 uppercase flex items-center gap-1.5">
-                                <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> Batch Upload / Auto-fill
-                            </label>
-                            <span class="text-[11px] text-slate-400">Range 1 to <span id="batchMaxEpCount">40</span></span>
-                        </div>
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" id="batchBaseUrl" placeholder="Sample MP4 link: https://commondatastorage.googleapis.com/..." 
-                                class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
-                            <button type="button" onclick="handleBatchApply()" class="min-h-[40px] px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-medium whitespace-nowrap transition-all flex items-center justify-center gap-1">
-                                Apply to All Ep 1..N
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Episode Links List Table / Inputs -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between text-[11px] text-slate-400 font-semibold px-1">
                             <span>EPISODE</span>
-                            <span>VIDEO / EMBED URL (MP4 / YOUTUBE)</span>
-                            <span>FILL</span>
+                            <span>YOUTUBE OR VIDEO URL</span>
                         </div>
-
-                        <!-- Episode Links Dynamic Container with responsive custom scroll -->
-                        <div id="episodesListContainer" class="max-h-[300px] sm:max-h-[380px] overflow-y-auto space-y-2 pr-1">
-                            <!-- Populated dynamically -->
-                        </div>
+                        <div id="episodesListContainer" class="max-h-[340px] overflow-y-auto space-y-2 pr-1"></div>
                     </div>
 
-                    <!-- Save Episode Updates Button -->
-                    <div class="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-                        <span id="saveStatusText" class="text-xs text-emerald-400 font-medium hidden">
-                            <i data-lucide="check-circle" class="w-3.5 h-3.5 inline mr-1"></i> All episode links saved successfully!
-                        </span>
-                        <button type="button" onclick="saveEpisodeLinks()" class="w-full sm:w-auto min-h-[44px] ml-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/20 transition-all flex items-center justify-center gap-2">
-                            <i data-lucide="save" class="w-4 h-4"></i> Save Episodes Changes
-                        </button>
+                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
+                        <span id="saveStatusText" class="text-xs text-emerald-400 font-medium hidden">Saved successfully to Firebase!</span>
+                        <button type="button" onclick="saveEpisodeLinks()" class="ml-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/20">Save to Cloud</button>
                     </div>
-
                 </div>
             </div>
         </section>
-
     </main>
 
-    <!-- FULLY RESPONSIVE DRAMA DETAIL & VIDEO PLAYER MODAL -->
-    <div id="dramaModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4 transition-all">
+    <!-- MODAL PLAYER -->
+    <div id="dramaModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4">
         <div class="relative w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[96vh] flex flex-col">
-            
-            <!-- Modal Header / Close -->
-            <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-800/80 bg-slate-900/90 sticky top-0 z-20">
-                <div class="flex items-center gap-2 sm:gap-3 truncate pr-2">
-                    <span id="modalCategoryBadge" class="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-rose-500/20 text-rose-400 border border-rose-500/30 shrink-0">
-                        China Drama
-                    </span>
-                    <h3 id="modalTitle" class="text-base sm:text-lg font-bold text-white truncate">The King Kong</h3>
-                </div>
-                <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-all shrink-0 min-w-[40px] min-h-[40px] flex items-center justify-center">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
+            <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-800 bg-slate-900 sticky top-0 z-20">
+                <h3 id="modalTitle" class="text-lg font-bold text-white truncate">Drama Title</h3>
+                <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-
-            <!-- Modal Scrollable Content Body -->
-            <div class="overflow-y-auto p-3 sm:p-6 space-y-4 sm:space-y-6 flex-1">
-                
-                <!-- Video Player Container Section -->
-                <div class="space-y-2.5 sm:space-y-3">
-                    <div class="relative w-full bg-black rounded-xl sm:rounded-2xl overflow-hidden border border-slate-800 aspect-video shadow-2xl group">
-                        
-                        <!-- Video Display Element -->
-                        <div id="videoContainer" class="w-full h-full flex items-center justify-center">
-                            <!-- Replaced dynamically with iframe or video tag -->
-                            <video id="mainVideoPlayer" controls class="w-full h-full object-contain" poster="">
-                                <source id="videoSource" src="" type="video/mp4">
-                                Your browser does not support HTML5 video streaming.
-                            </video>
-                        </div>
-
-                        <!-- Current Episode Banner overlay -->
-                        <div class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-slate-900/90 backdrop-blur-md border border-slate-700/60 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-semibold text-rose-400 flex items-center gap-1.5 shadow-lg">
-                            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-                            Playing: <span id="currentEpisodeLabel" class="text-white">Episode 1</span>
-                        </div>
-                    </div>
-
-                    <!-- Video Navigation Controls -->
-                    <div class="flex items-center justify-between bg-slate-950/80 p-2.5 sm:p-3 rounded-xl border border-slate-800/80">
-                        <button id="prevEpBtn" onclick="navigateEpisode(-1)" class="min-h-[38px] px-3 sm:px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-all">
-                            <i data-lucide="chevron-left" class="w-4 h-4"></i> Prev
-                        </button>
-
-                        <span class="text-[11px] sm:text-xs text-slate-400">Episode Navigation</span>
-
-                        <button id="nextEpBtn" onclick="navigateEpisode(1)" class="min-h-[38px] px-3 sm:px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-all">
-                            Next <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                        </button>
+            <div class="overflow-y-auto p-4 sm:p-6 space-y-6 flex-1">
+                <div class="relative w-full bg-black rounded-xl overflow-hidden border border-slate-800 aspect-video shadow-2xl flex items-center justify-center">
+                    <div id="videoContainer" class="w-full h-full flex items-center justify-center">
+                        <iframe id="youtubeIframe" class="w-full h-full hidden" src="" frameborder="0" allowfullscreen></iframe>
+                        <video id="mainVideoPlayer" controls class="w-full h-full object-contain hidden">
+                            <source id="videoSource" src="" type="video/mp4">
+                        </video>
                     </div>
                 </div>
-
-                <!-- Drama Details & Metadata -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 pt-1">
-                    <!-- Left: Synopsis & Info -->
-                    <div class="md:col-span-2 space-y-2">
-                        <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-                            <span class="flex items-center gap-1 text-amber-400 font-bold"><i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i> <span id="modalRating">9.5</span></span>
-                            <span>•</span>
-                            <span id="modalGenre" class="text-slate-300 font-medium">Fantasy, Action</span>
-                            <span>•</span>
-                            <span id="modalTotalEps" class="text-slate-300">40 Episodes</span>
-                        </div>
-                        <p id="modalDesc" class="text-slate-300 text-xs sm:text-sm leading-relaxed">
-                            Full detailed synopsis description of the selected drama series will appear here with rich context.
-                        </p>
-                    </div>
-
-                    <!-- Right: Direct Admin Upload Ep Quick Access -->
-                    <div class="bg-slate-950/80 p-3.5 sm:p-4 rounded-xl border border-slate-800 flex flex-col justify-between gap-2">
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-0.5">Manage Series Links</h4>
-                            <p class="text-[11px] text-slate-400">Need to upload or edit video links for this drama?</p>
-                        </div>
-                        <button id="modalManageBtn" onclick="openAdminForCurrent()" class="min-h-[38px] w-full py-2 bg-slate-800 hover:bg-slate-700 text-rose-400 text-xs font-semibold rounded-lg border border-slate-700 flex items-center justify-center gap-1.5 transition-all">
-                            <i data-lucide="settings" class="w-3.5 h-3.5"></i> Open Episode Editor
-                        </button>
-                    </div>
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <button onclick="navigateEpisode(-1)" class="px-4 py-1.5 rounded-lg bg-slate-800 text-xs font-semibold text-slate-300">Prev</button>
+                    <span id="currentEpisodeLabel" class="text-xs text-rose-400 font-bold">Episode 1</span>
+                    <button onclick="navigateEpisode(1)" class="px-4 py-1.5 rounded-lg bg-slate-800 text-xs font-semibold text-slate-300">Next</button>
                 </div>
-
-                <!-- Fully Responsive Episode Selector Grid (1 until 40 / 30) -->
-                <div class="space-y-2.5 pt-1">
-                    <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                        <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
-                            <i data-lucide="list-video" class="w-4 h-4 text-rose-500"></i> Select Episode (1 to <span id="gridMaxEp">40</span>)
-                        </h4>
-                        <span class="text-[11px] text-slate-400"><span id="uploadedCountText">0</span> Ep Links Uploaded</span>
-                    </div>
-
-                    <!-- Responsive Grid of Episode Buttons -->
-                    <div id="episodesGrid" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1.5 sm:gap-2 max-h-44 sm:max-h-52 overflow-y-auto pr-1">
-                        <!-- Populated dynamically via JS -->
-                    </div>
+                <p id="modalDesc" class="text-slate-300 text-sm"></p>
+                <div class="space-y-2">
+                    <h4 class="text-sm font-bold text-white">Select Episode</h4>
+                    <div id="episodesGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-2 max-h-48 overflow-y-auto pr-1"></div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM TOAST NOTIFICATION CONTAINER -->
-    <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none max-w-xs sm:max-w-md">
-        <div class="bg-slate-800 border border-slate-700 text-slate-100 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
-            <div id="toastIcon" class="text-rose-500 shrink-0">
-                <i data-lucide="check-circle" class="w-5 h-5"></i>
-            </div>
-            <span id="toastMessage" class="text-xs sm:text-sm font-medium">Notification message</span>
-        </div>
-    </div>
+    <!-- Firebase SDK Scripts (Modular v10+) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    <!-- APPLICATION LOGIC & DATA SCRIPT -->
-    <script>
-        // Sample Video fallback links for demonstration
-        const SAMPLE_VIDEOS = [
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-            'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4'
-        ];
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxDGz8hX-i8XC164GeksalQ5IZw_i3e5s",
+            authDomain: "dramahub-1f226.firebaseapp.com",
+            databaseURL: "https://dramahub-1f226-default-rtdb.firebaseio.com",
+            projectId: "dramahub-1f226",
+            storageBucket: "dramahub-1f226.firebasestorage.app",
+            messagingSenderId: "59769009321",
+            appId: "1:59769009321:web:eedf17a34858515c82a5b8",
+            measurementId: "G-7KWC3DJYB3"
+        };
 
-        // INITIAL DRAMAS SEED DATA
-        const initialDramas = [
-            {
-                id: 'd1',
-                title: 'The King Kong',
-                category: 'china',
-                genre: 'Fantasy, Action',
-                totalEpisodes: 40,
-                rating: 9.6,
-                poster: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop',
-                description: 'An ancient guardian monkey king rises in an empire of martial arts to defend humanity across 40 thrilling episodes.',
-                episodes: {
-                    1: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
-                    2: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
-                    3: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
-                }
-            },
-            {
-                id: 'd2',
-                title: 'Monkey: Legend of the West',
-                category: 'china',
-                genre: 'Mythology, Adventure',
-                totalEpisodes: 30,
-                rating: 9.3,
-                poster: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop',
-                description: 'The journey of the Monkey King as he embarks on an quest across mystical mountains with 30 action-packed episodes.',
-                episodes: {
-                    1: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4'
-                }
-            },
-            {
-                id: 'd3',
-                title: 'Crash Landing on Love',
-                category: 'korea',
-                genre: 'Romance, Drama',
-                totalEpisodes: 16,
-                rating: 9.8,
-                poster: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=600&auto=format&fit=crop',
-                description: 'A South Korean heiress accidentally paraglides into North Korea and into the life of an army officer.',
-                episodes: {
-                    1: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
-                }
-            },
-            {
-                id: 'd4',
-                title: 'The Kings Avatar',
-                category: 'china',
-                genre: 'E-Sports, Action',
-                totalEpisodes: 40,
-                rating: 9.4,
-                poster: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop',
-                description: 'In a popular online game, Ye Xiu is regarded as a textbook top-tier pro player who starts a legendary comeback.',
-                episodes: {}
-            },
-            {
-                id: 'd5',
-                title: 'Goblin: The Lonely God',
-                category: 'korea',
-                genre: 'Fantasy, Romance',
-                totalEpisodes: 16,
-                rating: 9.7,
-                poster: 'https://images.unsplash.com/photo-1514533450685-4493e01d1fdc?q=80&w=600&auto=format&fit=crop',
-                description: 'An immortal goblin searches for his human bride to end his cursed immortality.',
-                episodes: {}
-            },
-            {
-                id: 'd6',
-                title: 'Untamed Spirits',
-                category: 'china',
-                genre: 'Historical, Mystery',
-                totalEpisodes: 50,
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Default initial dramas if database is empty
+        const defaultDramas = {
+            "d1": {
+                id: "d1",
+                title: "The King Kong: Eternal Empire",
+                category: "china",
+                genre: "Fantasy, Action",
+                totalEps: 10,
                 rating: 9.5,
-                poster: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
-                description: 'Two soulmate cultivators travel to solve tragic mysteries linked to an ancient curse.',
-                episodes: {}
+                poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop",
+                desc: "An epic fantasy drama following ancient guardians defending the realm.",
+                episodes: { 1: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }
             }
-        ];
+        };
 
-        // GLOBAL APPLICATION STATE
-        let dramas = [];
-        let currentTab = 'all'; 
-        let currentActiveDramaId = null;
-        let currentSelectedEp = 1;
-        let searchQuery = '';
+        window.dramasData = {};
+        window.currentTab = 'all';
+        window.currentDramaId = null;
+        window.currentEpNum = 1;
 
-        // INITIALIZATION
-        window.addEventListener('DOMContentLoaded', () => {
-            loadDramasFromStorage();
-            initLucide();
+        // Listen live from Firebase Realtime Database
+        const dramasRef = ref(db, 'dramas');
+        onValue(dramasRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                window.dramasData = data;
+            } else {
+                set(dramasRef, defaultDramas);
+                window.dramasData = defaultDramas;
+            }
             renderCatalog();
-            populateTargetDramaDropdown();
+            populateAdminDropdowns();
         });
 
-        function initLucide() {
-            if (window.lucide) {
-                lucide.createIcons();
-            }
-        }
-
-        // LOCAL STORAGE HANDLERS
-        function loadDramasFromStorage() {
-            const saved = localStorage.getItem('dramahub_dramas_db');
-            if (saved) {
-                try {
-                    dramas = JSON.parse(saved);
-                } catch (e) {
-                    console.error("Failed to parse LocalStorage data", e);
-                    dramas = initialDramas;
-                }
-            } else {
-                dramas = initialDramas;
-                saveDramasToStorage();
-            }
-        }
-
-        function saveDramasToStorage() {
-            localStorage.setItem('dramahub_dramas_db', JSON.stringify(dramas));
-        }
-
-        // NAVIGATION TABS CONTROL
-        function setActiveTab(tab) {
-            currentTab = tab;
+        window.setActiveTab = function(tab) {
+            window.currentTab = tab;
+            document.getElementById('catalogSection').classList.toggle('hidden', tab === 'upload');
+            document.getElementById('uploadSection').classList.toggle('hidden', tab !== 'upload');
             
-            // Update active state styles on tabs
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-rose-400', 'bg-slate-800/80');
                 btn.classList.add('text-slate-400');
             });
-
-            const activeNavBtn = document.getElementById(`nav-${tab}`);
-            if (activeNavBtn) {
-                activeNavBtn.classList.remove('text-slate-400');
-                activeNavBtn.classList.add('text-rose-400', 'bg-slate-800/80');
-            }
-
-            const catalogSection = document.getElementById('catalogSection');
-            const uploadSection = document.getElementById('uploadSection');
-            const sectionTitle = document.getElementById('sectionTitle');
-
-            if (tab === 'upload') {
-                catalogSection.classList.add('hidden');
-                uploadSection.classList.remove('hidden');
-                populateTargetDramaDropdown();
-            } else {
-                catalogSection.classList.remove('hidden');
-                uploadSection.classList.add('hidden');
-
-                if (tab === 'china') {
-                    sectionTitle.innerHTML = `Chinese Dramas <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">C-Drama</span>`;
-                } else if (tab === 'korea') {
-                    sectionTitle.innerHTML = `Korean Dramas <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">K-Drama</span>`;
-                } else {
-                    sectionTitle.innerHTML = `All Dramas <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>`;
-                }
-
-                renderCatalog();
-            }
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        // SEARCH & FILTERS
-        function handleSearch() {
-            searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            if(tab === 'all') document.getElementById('nav-all')?.classList.add('text-rose-400', 'bg-slate-800/80');
+            if(tab === 'china') document.getElementById('nav-china')?.classList.add('text-rose-400', 'bg-slate-800/80');
+            if(tab === 'korea') document.getElementById('nav-korea')?.classList.add('text-rose-400', 'bg-slate-800/80');
+            if(tab === 'upload') document.getElementById('nav-upload')?.classList.add('text-rose-400', 'bg-slate-800/80');
             renderCatalog();
         }
 
-        function handleSearchMobile() {
-            searchQuery = document.getElementById('mobileSearchInput').value.toLowerCase();
-            renderCatalog();
-        }
-
-        function applyFilters() {
-            renderCatalog();
-        }
-
-        // RENDER DRAMA CATALOG GRID
-        function renderCatalog() {
+        window.renderCatalog = function() {
             const grid = document.getElementById('dramaGrid');
-            const emptyState = document.getElementById('emptyState');
-            const genreFilter = document.getElementById('genreFilter').value;
-            const sortBy = document.getElementById('sortBy').value;
+            const genreVal = document.getElementById('genreFilter')?.value || 'all';
+            const searchVal = document.getElementById('searchInput')?.value.toLowerCase() || '';
+            grid.innerHTML = '';
 
-            // Filter logic
-            let filtered = dramas.filter(d => {
-                const matchTab = (currentTab === 'all') || (d.category === currentTab);
-                const matchSearch = d.title.toLowerCase().includes(searchQuery) || d.genre.toLowerCase().includes(searchQuery);
-                const matchGenre = (genreFilter === 'all') || d.genre.toLowerCase().includes(genreFilter.toLowerCase());
-                return matchTab && matchSearch && matchGenre;
+            let list = Object.values(window.dramasData);
+            if (window.currentTab === 'china') list = list.filter(d => d.category === 'china');
+            if (window.currentTab === 'korea') list = list.filter(d => d.category === 'korea');
+            if (genreVal !== 'all') list = list.filter(d => d.genre && d.genre.includes(genreVal));
+            if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal) || d.genre.toLowerCase().includes(searchVal));
+
+            document.getElementById('dramaCount').innerText = list.length;
+            document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
+
+            list.forEach(drama => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-xl overflow-hidden border border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group flex flex-col';
+                card.onclick = () => openDramaDetail(drama.id);
+                card.innerHTML = `
+                    <div class="relative aspect-[3/4] overflow-hidden bg-slate-900">
+                        <img src="${drama.poster || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
+                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950/80 text-rose-400 border border-slate-700">${drama.category === 'china' ? 'C-Drama' : 'K-Drama'}</span>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h4 class="font-bold text-sm text-white line-clamp-1 group-hover:text-rose-400 transition-colors">${drama.title}</h4>
+                            <p class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${drama.genre}</p>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-800/60">
+                            <span class="text-amber-400 font-semibold"><i data-lucide="star" class="w-3 h-3 inline fill-amber-400"></i> ${drama.rating}</span>
+                            <span>${drama.totalEps} Eps</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
             });
-
-            // Sort logic
-            if (sortBy === 'rating') {
-                filtered.sort((a, b) => b.rating - a.rating);
-            } else if (sortBy === 'episodes') {
-                filtered.sort((a, b) => b.totalEpisodes - a.totalEpisodes);
-            }
-
-            // Update Count
-            const countBadge = document.getElementById('dramaCount');
-            if (countBadge) countBadge.textContent = `${filtered.length} Series`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
-
-            emptyState.classList.add('hidden');
-
-            // Render Cards HTML
-            grid.innerHTML = filtered.map(drama => {
-                const isChina = drama.category === 'china';
-                const badgeColor = isChina ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30' : 'bg-purple-500/20 text-purple-300 border-purple-500/30';
-                const categoryName = isChina ? 'C-Drama' : 'K-Drama';
-                
-                // Calculate uploaded count
-                const uploadedEpsCount = Object.keys(drama.episodes || {}).length;
-
-                return `
-                    <div onclick="openDramaDetail('${drama.id}')" class="group relative bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg hover:border-slate-700 hover:shadow-2xl hover:shadow-rose-950/20 transition-all duration-300 cursor-pointer flex flex-col">
-                        
-                        <!-- Poster Container -->
-                        <div class="relative aspect-[3/4] w-full overflow-hidden bg-slate-950">
-                            <img src="${drama.poster}" alt="${drama.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x600/1e293b/e2e8f0?text=${encodeURIComponent(drama.title)}'">
-                            
-                            <!-- Badges -->
-                            <div class="absolute top-1.5 left-1.5 flex flex-col gap-1 items-start">
-                                <span class="text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md backdrop-blur-md border ${badgeColor}">
-                                    ${categoryName}
-                                </span>
-                            </div>
-
-                            <!-- Rating Badge -->
-                            <div class="absolute top-1.5 right-1.5 bg-slate-950/80 backdrop-blur-md border border-slate-800 text-amber-400 text-[10px] sm:text-[11px] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1">
-                                <i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> ${drama.rating}
-                            </div>
-
-                            <!-- Hover Overlay Play Icon -->
-                            <div class="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-rose-600 text-white flex items-center justify-center shadow-lg shadow-rose-600/50 transform scale-75 group-hover:scale-100 transition-transform">
-                                    <i data-lucide="play" class="w-5 h-5 sm:w-6 sm:h-6 fill-white ml-0.5"></i>
-                                </div>
-                            </div>
-
-                            <!-- Episodes Counter Overlay -->
-                            <div class="absolute bottom-1.5 left-1.5 right-1.5 flex items-center justify-between text-[10px] sm:text-[11px] font-medium bg-slate-900/90 backdrop-blur-md px-2 py-0.5 sm:py-1 rounded-md border border-slate-800 text-slate-300">
-                                <span>1-${drama.totalEpisodes} Eps</span>
-                                <span class="${uploadedEpsCount > 0 ? 'text-emerald-400' : 'text-slate-500'} font-semibold">
-                                    ${uploadedEpsCount}/${drama.totalEpisodes}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Card Content -->
-                        <div class="p-2.5 sm:p-3.5 flex-1 flex flex-col justify-between space-y-1">
-                            <div>
-                                <h3 class="font-bold text-xs sm:text-sm text-white line-clamp-1 group-hover:text-rose-400 transition-colors">${drama.title}</h3>
-                                <p class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${drama.genre}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            initLucide();
+            lucide.createIcons();
         }
 
-        // DRAMA DETAIL & EPISODE PLAYER MODAL LOGIC
-        function openDramaDetail(id) {
-            const drama = dramas.find(d => d.id === id);
-            if (!drama) return;
+        window.openDramaDetail = function(id) {
+            window.currentDramaId = id;
+            const drama = window.dramasData[id];
+            if(!drama) return;
 
-            currentActiveDramaId = drama.id;
-            currentSelectedEp = 1;
+            document.getElementById('modalTitle').innerText = drama.title;
+            document.getElementById('modalDesc').innerText = drama.desc || '';
+            document.getElementById('dramaModal').classList.remove('hidden');
 
-            const modal = document.getElementById('dramaModal');
-            document.getElementById('modalTitle').textContent = drama.title;
-            document.getElementById('modalGenre').textContent = drama.genre;
-            document.getElementById('modalRating').textContent = drama.rating;
-            document.getElementById('modalTotalEps').textContent = `${drama.totalEpisodes} Total Episodes`;
-            document.getElementById('modalDesc').textContent = drama.description;
-            document.getElementById('gridMaxEp').textContent = drama.totalEpisodes;
-
-            const catBadge = document.getElementById('modalCategoryBadge');
-            if (drama.category === 'china') {
-                catBadge.textContent = 'China Drama';
-                catBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-500/30';
-            } else {
-                catBadge.textContent = 'Korea Drama';
-                catBadge.className = 'px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-500/30';
-            }
-
-            renderEpisodeGrid(drama);
-            loadEpisodeVideo(currentSelectedEp);
-
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            initLucide();
+            const episodes = drama.episodes || {};
+            const firstEp = Object.keys(episodes).sort((a,b)=>a-b)[0] || 1;
+            playEpisode(id, Number(firstEp));
+            renderEpisodesModalGrid(drama);
         }
 
-        function closeModal() {
-            const modal = document.getElementById('dramaModal');
-            modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+        window.closeModal = function() {
+            document.getElementById('dramaModal').classList.add('hidden');
+            document.getElementById('youtubeIframe').src = '';
+            document.getElementById('mainVideoPlayer').pause();
+        }
 
-            // Pause video on close
+        window.playEpisode = function(dramaId, epNum) {
+            window.currentDramaId = dramaId;
+            window.currentEpNum = epNum;
+            const drama = window.dramasData[dramaId];
+            const url = drama.episodes?.[epNum] || '';
+
+            document.getElementById('currentEpisodeLabel').innerText = `Episode ${epNum}`;
+            const iframe = document.getElementById('youtubeIframe');
             const video = document.getElementById('mainVideoPlayer');
-            if (video) video.pause();
-        }
 
-        function renderEpisodeGrid(drama) {
-            const grid = document.getElementById('episodesGrid');
-            const uploadedCount = Object.keys(drama.episodes || {}).length;
-            document.getElementById('uploadedCountText').textContent = uploadedCount;
-
-            let html = '';
-            for (let i = 1; i <= drama.totalEpisodes; i++) {
-                const hasLink = !!(drama.episodes && drama.episodes[i]);
-                const isActive = (i === currentSelectedEp);
-
-                let btnStyle = "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700";
-                if (isActive) {
-                    btnStyle = "bg-rose-600 text-white font-bold border-rose-500 shadow-lg shadow-rose-600/30";
-                } else if (hasLink) {
-                    btnStyle = "bg-slate-800 text-emerald-400 font-semibold border-emerald-500/30 hover:border-emerald-400";
-                }
-
-                html += `
-                    <button onclick="selectEpisode(${i})" class="min-h-[36px] py-1.5 rounded-lg text-xs border transition-all flex flex-col items-center justify-center relative ${btnStyle}">
-                        <span>Ep ${i}</span>
-                        ${hasLink && !isActive ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5"></span>' : ''}
-                    </button>
-                `;
-            }
-            grid.innerHTML = html;
-        }
-
-        function selectEpisode(epNumber) {
-            currentSelectedEp = epNumber;
-            const drama = dramas.find(d => d.id === currentActiveDramaId);
-            if (drama) {
-                renderEpisodeGrid(drama);
-                loadEpisodeVideo(epNumber);
-            }
-        }
-
-        function navigateEpisode(direction) {
-            const drama = dramas.find(d => d.id === currentActiveDramaId);
-            if (!drama) return;
-
-            const nextEp = currentSelectedEp + direction;
-            if (nextEp >= 1 && nextEp <= drama.totalEpisodes) {
-                selectEpisode(nextEp);
-            }
-        }
-
-        function loadEpisodeVideo(epNumber) {
-            const drama = dramas.find(d => d.id === currentActiveDramaId);
-            if (!drama) return;
-
-            document.getElementById('currentEpisodeLabel').textContent = `Episode ${epNumber} of ${drama.totalEpisodes}`;
-            
-            // Enable / Disable prev/next
-            document.getElementById('prevEpBtn').disabled = (epNumber <= 1);
-            document.getElementById('nextEpBtn').disabled = (epNumber >= drama.totalEpisodes);
-
-            const videoContainer = document.getElementById('videoContainer');
-            const videoUrl = (drama.episodes && drama.episodes[epNumber]) ? drama.episodes[epNumber] : null;
-
-            if (videoUrl) {
-                if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be') || videoUrl.includes('embed')) {
-                    let embedUrl = videoUrl;
-                    if (videoUrl.includes('watch?v=')) {
-                        embedUrl = videoUrl.replace('watch?v=', 'embed/');
-                    }
-                    videoContainer.innerHTML = `
-                        <iframe src="${embedUrl}?autoplay=1" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    `;
-                } else {
-                    videoContainer.innerHTML = `
-                        <video id="mainVideoPlayer" controls autoplay class="w-full h-full object-contain">
-                            <source src="${videoUrl}" type="video/mp4">
-                            Your browser does not support HTML5 video playback.
-                        </video>
-                    `;
-                }
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                let embedUrl = url;
+                if(url.includes('watch?v=')) embedUrl = url.replace('watch?v=', 'embed/');
+                if(url.includes('youtu.be/')) embedUrl = url.replace('youtu.be/', 'www.youtube.com/embed/');
+                iframe.src = embedUrl;
+                iframe.classList.remove('hidden');
+                video.classList.add('hidden');
+                video.pause();
+            } else if (url) {
+                document.getElementById('videoSource').src = url;
+                video.load();
+                video.classList.remove('hidden');
+                iframe.classList.add('hidden');
+                iframe.src = '';
             } else {
-                videoContainer.innerHTML = `
-                    <div class="p-4 sm:p-6 text-center space-y-2.5">
-                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-800 text-amber-400 flex items-center justify-center mx-auto border border-slate-700">
-                            <i data-lucide="alert-circle" class="w-5 h-5 sm:w-6 sm:h-6"></i>
-                        </div>
-                        <h4 class="text-sm sm:text-base font-bold text-white">Episode ${epNumber} Link Not Uploaded Yet</h4>
-                        <p class="text-[11px] sm:text-xs text-slate-400 max-w-sm mx-auto">This episode has not been attached to a video link yet. You can upload video links for Ep 1 to Ep ${drama.totalEpisodes} in the Admin Panel.</p>
-                        <button onclick="openAdminForCurrent()" class="min-h-[40px] px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs rounded-lg transition-all">
-                            Upload Link for Episode ${epNumber}
-                        </button>
-                    </div>
-                `;
-                initLucide();
+                iframe.classList.add('hidden');
+                video.classList.add('hidden');
+                alert('No video link uploaded for Episode ' + epNum + ' yet!');
+            }
+            renderEpisodesModalGrid(drama);
+        }
+
+        window.navigateEpisode = function(direction) {
+            const drama = window.dramasData[window.currentDramaId];
+            if(!drama) return;
+            const nextEp = window.currentEpNum + direction;
+            if(nextEp >= 1 && nextEp <= drama.totalEps) {
+                playEpisode(drama.id, nextEp);
             }
         }
 
-        function openAdminForCurrent() {
-            closeModal();
-            setActiveTab('upload');
-            if (currentActiveDramaId) {
-                const select = document.getElementById('targetDramaSelect');
-                select.value = currentActiveDramaId;
-                onTargetDramaChange();
+        window.renderEpisodesModalGrid = function(drama) {
+            const grid = document.getElementById('episodesGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=drama.totalEps; i++) {
+                const hasLink = drama.episodes && drama.episodes[i];
+                const btn = document.createElement('button');
+                btn.className = `py-2 rounded-lg text-xs font-bold transition-all border ${window.currentEpNum === i ? 'bg-rose-600 text-white border-rose-500 shadow-lg' : hasLink ? 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700' : 'bg-slate-950 text-slate-600 border-slate-900'}`;
+                btn.innerText = i;
+                btn.onclick = () => playEpisode(drama.id, i);
+                grid.appendChild(btn);
             }
         }
 
-        // ADMIN MANAGEMENT PANEL LOGIC
-        function populateTargetDramaDropdown() {
-            const select = document.getElementById('targetDramaSelect');
-            if (!select) return;
-
-            select.innerHTML = dramas.map(d => `
-                <option value="${d.id}">${d.title} (${d.category === 'china' ? 'China' : 'Korea'} - ${d.totalEpisodes} Episodes)</option>
-            `).join('');
-
-            if (dramas.length > 0) {
-                if (!currentActiveDramaId || !dramas.some(d => d.id === currentActiveDramaId)) {
-                    currentActiveDramaId = dramas[0].id;
-                }
-                select.value = currentActiveDramaId;
-                onTargetDramaChange();
-            }
-        }
-
-        function onTargetDramaChange() {
-            const select = document.getElementById('targetDramaSelect');
-            currentActiveDramaId = select.value;
-            const drama = dramas.find(d => d.id === currentActiveDramaId);
-
-            if (!drama) return;
-
-            document.getElementById('selectedDramaBadge').textContent = `${drama.title} (${drama.totalEpisodes} Eps)`;
-            document.getElementById('batchMaxEpCount').textContent = drama.totalEpisodes;
-
-            renderEpisodeUploadInputs(drama);
-        }
-
-        function renderEpisodeUploadInputs(drama) {
-            const container = document.getElementById('episodesListContainer');
-            let html = '';
-
-            for (let i = 1; i <= drama.totalEpisodes; i++) {
-                const existingLink = (drama.episodes && drama.episodes[i]) ? drama.episodes[i] : '';
-                html += `
-                    <div class="flex items-center gap-1.5 sm:gap-2 bg-slate-900 p-1.5 sm:p-2 rounded-xl border border-slate-800">
-                        <span class="w-14 sm:w-16 text-center text-[11px] sm:text-xs font-bold text-slate-300 bg-slate-950 py-2 rounded-lg border border-slate-800 shrink-0">
-                            Ep ${i}
-                        </span>
-                        <input type="url" id="ep_input_${i}" value="${existingLink}" placeholder="Paste MP4 or iframe link for Ep ${i}..." 
-                            class="flex-1 min-w-0 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 sm:py-2 text-xs text-slate-100 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-rose-500">
-                        <button type="button" onclick="sampleFillEpisode(${i})" class="p-2 text-slate-400 hover:text-amber-400 hover:bg-slate-800 rounded-lg text-xs shrink-0 min-w-[36px] min-h-[36px] flex items-center justify-center" title="Fill Sample Demo Link">
-                            <i data-lucide="wand-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-            initLucide();
-        }
-
-        function sampleFillEpisode(epNumber) {
-            const input = document.getElementById(`ep_input_${epNumber}`);
-            if (input) {
-                const randomSample = SAMPLE_VIDEOS[(epNumber - 1) % SAMPLE_VIDEOS.length];
-                input.value = randomSample;
-                showToast(`Filled sample video for Episode ${epNumber}`);
-            }
-        }
-
-        function handleBatchApply() {
-            const baseUrl = document.getElementById('batchBaseUrl').value.trim();
-            const drama = dramas.find(d => d.id === currentActiveDramaId);
-
-            if (!drama) return;
-
-            const targetUrl = baseUrl || SAMPLE_VIDEOS[0];
-
-            for (let i = 1; i <= drama.totalEpisodes; i++) {
-                const input = document.getElementById(`ep_input_${i}`);
-                if (input) {
-                    input.value = targetUrl;
-                }
-            }
-
-            showToast(`Applied URL to all ${drama.totalEpisodes} episodes!`);
-        }
-
-        function saveEpisodeLinks() {
-            const drama = dramas.find(d => d.id === currentActiveDramaId);
-            if (!drama) return;
-
-            if (!drama.episodes) drama.episodes = {};
-
-            let count = 0;
-            for (let i = 1; i <= drama.totalEpisodes; i++) {
-                const input = document.getElementById(`ep_input_${i}`);
-                if (input && input.value.trim() !== '') {
-                    drama.episodes[i] = input.value.trim();
-                    count++;
-                } else {
-                    delete drama.episodes[i];
-                }
-            }
-
-            saveDramasToStorage();
-            
-            // Show status indicator
-            const statusText = document.getElementById('saveStatusText');
-            statusText.classList.remove('hidden');
-            setTimeout(() => statusText.classList.add('hidden'), 3000);
-
-            showToast(`Saved ${count} episode links for ${drama.title}!`);
-            renderCatalog();
-        }
-
-        // CREATE NEW DRAMA HANDLER
-        function handleCreateDrama(e) {
+        window.handleCreateDrama = function(e) {
             e.preventDefault();
-
-            const title = document.getElementById('addTitle').value.trim();
+            const title = document.getElementById('addTitle').value;
             const category = document.getElementById('addCategory').value;
-            const genre = document.getElementById('addGenre').value.trim();
-            const totalEps = parseInt(document.getElementById('addTotalEps').value);
-            const rating = parseFloat(document.getElementById('addRating').value);
-            let poster = document.getElementById('addPoster').value.trim();
-            const description = document.getElementById('addDesc').value.trim();
+            const genre = document.getElementById('addGenre').value;
+            const totalEps = parseInt(document.getElementById('addTotalEps').value) || 20;
+            const rating = parseFloat(document.getElementById('addRating').value) || 9.0;
+            const poster = document.getElementById('addPoster').value || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400';
+            const desc = document.getElementById('addDesc').value;
 
-            if (!poster) {
-                poster = `https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop`;
+            const newId = 'd_' + Date.now();
+            const newDrama = { id: newId, title, category, genre, totalEps, rating, poster, desc, episodes: {1: ""} };
+
+            set(ref(db, 'dramas/' + newId), newDrama).then(() => {
+                alert('Drama created successfully in Cloud Database!');
+                document.getElementById('newDramaForm').reset();
+                window.setActiveTab('all');
+            });
+        }
+
+        window.populateAdminDropdowns = function() {
+            const select = document.getElementById('targetDramaSelect');
+            if(!select) return;
+            select.innerHTML = '';
+            Object.values(window.dramasData).forEach(drama => {
+                const opt = document.createElement('option');
+                opt.value = drama.id;
+                opt.innerText = `${drama.title} (${drama.totalEps} Episodes)`;
+                select.appendChild(opt);
+            });
+            onTargetDramaChange();
+        }
+
+        window.onTargetDramaChange = function() {
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            const container = document.getElementById('episodesListContainer');
+            if(!drama || !container) return;
+
+            container.innerHTML = '';
+            for(let i=1; i<=drama.totalEps; i++) {
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2';
+                row.innerHTML = `
+                    <span class="w-12 text-xs font-bold text-slate-400">Ep ${i}</span>
+                    <input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="Paste YouTube link here..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200">
+                `;
+                container.appendChild(row);
+            }
+        }
+
+        window.saveEpisodeLinks = function() {
+            const dramaId = document.getElementById('targetDramaSelect').value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            const episodes = {};
+            for(let i=1; i<=drama.totalEps; i++) {
+                const val = document.getElementById(`epInput_${i}`)?.value.trim();
+                if(val) episodes[i] = val;
             }
 
-            const newDrama = {
-                id: 'd_' + Date.now(),
-                title,
-                category,
-                genre,
-                totalEpisodes: totalEps,
-                rating: rating || 9.0,
-                poster,
-                description: description || `Streaming all ${totalEps} episodes of ${title}.`,
-                episodes: {}
-            };
-
-            dramas.unshift(newDrama);
-            saveDramasToStorage();
-
-            // Reset form
-            document.getElementById('newDramaForm').reset();
-            showToast(`New Drama "${title}" with ${totalEps} episodes created!`);
-
-            // Switch Target Dropdown to this new drama
-            currentActiveDramaId = newDrama.id;
-            populateTargetDramaDropdown();
+            drama.episodes = episodes;
+            set(ref(db, 'dramas/' + dramaId), drama).then(() => {
+                const status = document.getElementById('saveStatusText');
+                status.classList.remove('hidden');
+                setTimeout(() => status.classList.add('hidden'), 3000);
+            });
         }
 
-       
-
-        // UTILITY TOAST NOTIFICATION
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toastMessage');
-
-            toastMsg.textContent = message;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
-        }
+        lucide.createIcons();
     </script>
 </body>
 </html>
