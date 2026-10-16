@@ -22,6 +22,8 @@
     </script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- HLS.js for playing .m3u8 video streams -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,7 +52,6 @@
                     </span>
                 </div>
 
-                <!-- Desktop Nav -->
                 <nav class="hidden lg:flex items-center space-x-1">
                     <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-rose-400 bg-slate-800/80 flex items-center gap-1.5">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i> All Shows
@@ -80,14 +81,12 @@
                         class="w-full pl-9 pr-4 py-2 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500">
                 </div>
 
-                <!-- Mobile Hamburger Menu Button -->
                 <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu Drawer -->
         <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 bg-slate-900/95 px-4 pt-3 pb-5 space-y-2.5">
             <div class="grid grid-cols-2 gap-2 pt-1">
                 <button onclick="setActiveTab('all'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-800/80">All Shows</button>
@@ -103,7 +102,6 @@
     <!-- Main Container -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
 
-        <!-- CATALOG SECTION -->
         <section id="catalogSection" class="space-y-6 sm:space-y-8">
             <div id="heroBanner" class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-rose-950 to-indigo-950 border border-slate-800 p-5 sm:p-8 md:p-10 shadow-2xl">
                 <div class="relative z-10 max-w-2xl space-y-3 sm:space-y-4">
@@ -147,7 +145,6 @@
             </div>
         </section>
 
-        <!-- ADMIN / UPLOAD SECTION -->
         <section id="uploadSection" class="hidden space-y-6 sm:space-y-8">
             <div class="border-b border-slate-800 pb-4">
                 <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
@@ -157,7 +154,6 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-                <!-- Add New Show -->
                 <div class="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i data-lucide="plus-circle" class="w-5 h-5 text-rose-400"></i> Step 1: Add New Show
@@ -204,7 +200,6 @@
                     </form>
                 </div>
 
-                <!-- Manage Episodes -->
                 <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i data-lucide="upload" class="w-5 h-5 text-indigo-400"></i> Step 2: Upload YouTube / Video Links
@@ -217,7 +212,7 @@
                     <div class="space-y-2">
                         <div class="flex items-center justify-between text-[11px] text-slate-400 font-semibold px-1">
                             <span>EPISODE</span>
-                            <span>YOUTUBE OR VIDEO URL</span>
+                            <span>YOUTUBE OR VIDEO URL (.m3u8, .mp4)</span>
                         </div>
                         <div id="episodesListContainer" class="max-h-[340px] overflow-y-auto space-y-2 pr-1"></div>
                     </div>
@@ -242,9 +237,7 @@
                 <div class="relative w-full bg-black rounded-xl overflow-hidden border border-slate-800 aspect-video shadow-2xl flex items-center justify-center">
                     <div id="videoContainer" class="w-full h-full flex items-center justify-center">
                         <iframe id="youtubeIframe" class="w-full h-full hidden" src="" frameborder="0" allowfullscreen></iframe>
-                        <video id="mainVideoPlayer" controls class="w-full h-full object-contain hidden">
-                            <source id="videoSource" src="" type="video/mp4">
-                        </video>
+                        <video id="mainVideoPlayer" controls autoplay class="w-full h-full object-contain hidden"></video>
                     </div>
                 </div>
                 <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
@@ -261,7 +254,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Scripts & Toggle Function -->
+    <!-- Firebase SDK Scripts & HLS Player Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -298,8 +291,8 @@
         window.currentTab = 'all';
         window.currentDramaId = null;
         window.currentEpNum = 1;
+        let hlsInstance = null;
 
-        // Mobile Menu Toggle Function
         window.toggleMobileMenu = function() {
             const menu = document.getElementById('mobileMenu');
             if (menu) {
@@ -404,7 +397,13 @@
         window.closeModal = function() {
             document.getElementById('dramaModal').classList.add('hidden');
             document.getElementById('youtubeIframe').src = '';
-            document.getElementById('mainVideoPlayer').pause();
+            const video = document.getElementById('mainVideoPlayer');
+            video.pause();
+            video.src = '';
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
         }
 
         window.playEpisode = function(dramaId, epNum) {
@@ -417,6 +416,11 @@
             const iframe = document.getElementById('youtubeIframe');
             const video = document.getElementById('mainVideoPlayer');
 
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
+
             if (url.includes('youtube.com') || url.includes('youtu.be')) {
                 let embedUrl = url;
                 if(url.includes('watch?v=')) embedUrl = url.replace('watch?v=', 'embed/');
@@ -426,11 +430,29 @@
                 video.classList.add('hidden');
                 video.pause();
             } else if (url) {
-                document.getElementById('videoSource').src = url;
-                video.load();
-                video.classList.remove('hidden');
                 iframe.classList.add('hidden');
                 iframe.src = '';
+                video.classList.remove('hidden');
+
+                if (url.includes('.m3u8')) {
+                    if (Hls.isSupported()) {
+                        hlsInstance = new Hls();
+                        hlsInstance.loadSource(url);
+                        hlsInstance.attachMedia(video);
+                        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+                            video.play().catch(e => console.log("Auto-play prevented", e));
+                        });
+                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = url;
+                        video.addEventListener('loadedmetadata', function() {
+                            video.play();
+                        });
+                    }
+                } else {
+                    video.src = url;
+                    video.load();
+                    video.play().catch(e => console.log("Auto-play prevented", e));
+                }
             } else {
                 iframe.classList.add('hidden');
                 video.classList.add('hidden');
@@ -506,7 +528,7 @@
                 row.className = 'flex items-center gap-2';
                 row.innerHTML = `
                     <span class="w-12 text-xs font-bold text-slate-400">Ep ${i}</span>
-                    <input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="Paste YouTube link here..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200">
+                    <input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="Paste .m3u8 or YouTube link..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200">
                 `;
                 container.appendChild(row);
             }
