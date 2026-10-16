@@ -427,4 +427,305 @@
             if (window.currentTab === 'china') list = list.filter(d => d.category === 'china');
             if (window.currentTab === 'korea') list = list.filter(d => d.category === 'korea');
             if (genreVal !== 'all') list = list.filter(d => d.genre && d.genre.includes(genreVal));
-            if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal)
+            if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal) || d.genre.toLowerCase().includes(searchVal));
+
+            document.getElementById('dramaCount').innerText = list.length;
+            document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
+
+            const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE) || 1;
+            if (window.currentPaginationPage > totalPages) window.currentPaginationPage = totalPages;
+            if (window.currentPaginationPage < 1) window.currentPaginationPage = 1;
+
+            const startIndex = (window.currentPaginationPage - 1) * ITEMS_PER_PAGE;
+            const paginatedList = list.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+            paginatedList.forEach(drama => {
+                let badgeText = 'Drama';
+                if (drama.category === 'china') badgeText = 'C-Drama';
+                else if (drama.category === 'korea') badgeText = 'K-Drama';
+                else if (drama.category === 'action') badgeText = 'Action';
+                else if (drama.category === 'anime') badgeText = 'Anime';
+
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-xl overflow-hidden border border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group flex flex-col';
+                card.onclick = () => openDramaDetail(drama.id);
+                card.innerHTML = `
+                    <div class="relative aspect-[3/4] overflow-hidden bg-slate-900">
+                        <img src="${drama.poster || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
+                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950/80 text-rose-400 border border-slate-700">${badgeText}</span>
+                    </div>
+                    <div class="p-3 flex flex-col flex-1 justify-between">
+                        <div>
+                            <h4 class="font-bold text-sm text-white line-clamp-1 group-hover:text-rose-400 transition-colors">${drama.title}</h4>
+                            <p class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${drama.genre}</p>
+                        </div>
+                        <div class="flex items-center justify-between text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-800/60">
+                            <span class="text-amber-400 font-semibold"><i data-lucide="star" class="w-3 h-3 inline fill-amber-400"></i> ${drama.rating}</span>
+                            <span>${drama.totalEps} Eps</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderPaginationControls(totalPages);
+            lucide.createIcons();
+        }
+
+        window.renderPaginationControls = function(totalPages) {
+            const container = document.getElementById('paginationContainer');
+            container.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold border ${window.currentPaginationPage === 1 ? 'bg-slate-900 text-slate-600 border-slate-900 cursor-not-allowed' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+            prevBtn.innerText = 'Prev';
+            prevBtn.disabled = window.currentPaginationPage === 1;
+            prevBtn.onclick = () => {
+                if (window.currentPaginationPage > 1) {
+                    window.currentPaginationPage--;
+                    renderCatalog();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            };
+            container.appendChild(prevBtn);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `w-9 h-9 rounded-xl text-xs font-bold border transition-all ${window.currentPaginationPage === i ? 'bg-rose-600 text-white border-rose-500 shadow-lg shadow-rose-600/30' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+                pageBtn.innerText = i;
+                pageBtn.onclick = () => {
+                    window.currentPaginationPage = i;
+                    renderCatalog();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                };
+                container.appendChild(pageBtn);
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold border ${window.currentPaginationPage === totalPages ? 'bg-slate-900 text-slate-600 border-slate-900 cursor-not-allowed' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+            nextBtn.innerText = 'Next';
+            nextBtn.disabled = window.currentPaginationPage === totalPages;
+            nextBtn.onclick = () => {
+                if (window.currentPaginationPage < totalPages) {
+                    window.currentPaginationPage++;
+                    renderCatalog();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            };
+            container.appendChild(nextBtn);
+        }
+
+        window.openDramaDetail = function(id) {
+            window.currentDramaId = id;
+            const drama = window.dramasData[id];
+            if(!drama) return;
+
+            document.getElementById('modalTitle').innerText = drama.title;
+            document.getElementById('modalDesc').innerText = drama.desc || '';
+            document.getElementById('dramaModal').classList.remove('hidden');
+
+            const episodes = drama.episodes || {};
+            const firstEp = Object.keys(episodes).sort((a,b)=>a-b)[0] || 1;
+            playEpisode(id, Number(firstEp));
+            renderEpisodesModalGrid(drama);
+        }
+
+        window.closeModal = function() {
+            document.getElementById('dramaModal').classList.add('hidden');
+            document.getElementById('embedPlayer').src = '';
+        }
+
+        window.playEpisode = function(dramaId, epNum) {
+            window.currentDramaId = dramaId;
+            window.currentEpNum = epNum;
+            const drama = window.dramasData[dramaId];
+            let url = drama.episodes?.[epNum] || '';
+
+            document.getElementById('currentEpisodeLabel').innerText = `Episode ${epNum}`;
+            const iframe = document.getElementById('embedPlayer');
+
+            if (url) {
+                if(url.includes('watch?v=')) {
+                    url = url.replace('watch?v=', 'embed/');
+                } else if(url.includes('youtu.be/')) {
+                    url = url.replace('youtu.be/', 'www.youtube.com/embed/');
+                }
+                iframe.src = url;
+            } else {
+                iframe.src = '';
+                alert('No video link uploaded for Episode ' + epNum + ' yet!');
+            }
+            renderEpisodesModalGrid(drama);
+        }
+
+        window.navigateEpisode = function(direction) {
+            const drama = window.dramasData[window.currentDramaId];
+            if(!drama) return;
+            const nextEp = window.currentEpNum + direction;
+            if(nextEp >= 1 && nextEp <= drama.totalEps) {
+                playEpisode(drama.id, nextEp);
+            }
+        }
+
+        window.renderEpisodesModalGrid = function(drama) {
+            const grid = document.getElementById('episodesGrid');
+            grid.innerHTML = '';
+            for(let i=1; i<=drama.totalEps; i++) {
+                const hasLink = drama.episodes && drama.episodes[i];
+                const btn = document.createElement('button');
+                btn.className = `py-2 rounded-lg text-xs font-bold transition-all border ${window.currentEpNum === i ? 'bg-rose-600 text-white border-rose-500 shadow-lg' : hasLink ? 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700' : 'bg-slate-950 text-slate-600 border-slate-900'}`;
+                btn.innerText = i;
+                btn.onclick = () => playEpisode(drama.id, i);
+                grid.appendChild(btn);
+            }
+        }
+
+        window.handleCreateDrama = function(e) {
+            e.preventDefault();
+            const title = document.getElementById('addTitle').value;
+            const category = document.getElementById('addCategory').value;
+            const genre = document.getElementById('addGenre').value;
+            const totalEps = parseInt(document.getElementById('addTotalEps').value) || 12;
+            const rating = parseFloat(document.getElementById('addRating').value) || 9.0;
+            const poster = document.getElementById('addPoster').value || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400';
+            const desc = document.getElementById('addDesc').value;
+
+            const newId = 'd_' + Date.now();
+            const newDrama = { id: newId, title, category, genre, totalEps, rating, poster, desc, episodes: {1: ""} };
+
+            set(ref(db, 'dramas/' + newId), newDrama).then(() => {
+                alert('Show created successfully in Cloud Database!');
+                document.getElementById('newDramaForm').reset();
+                window.setActiveTab('all');
+            });
+        }
+
+        window.populateAdminDropdowns = function() {
+            const select = document.getElementById('targetDramaSelect');
+            const catFilter = document.getElementById('adminCategoryFilter')?.value || 'all';
+            const searchVal = document.getElementById('adminSearchInput')?.value.toLowerCase() || '';
+
+            if(!select) return;
+            select.innerHTML = '';
+
+            let list = Object.values(window.dramasData);
+
+            if (catFilter !== 'all') {
+                list = list.filter(d => d.category === catFilter);
+            }
+            if (searchVal) {
+                list = list.filter(d => d.title.toLowerCase().includes(searchVal));
+            }
+
+            if(list.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.innerText = '-- No Shows Found --';
+                select.appendChild(opt);
+                document.getElementById('episodesListContainer').innerHTML = '<p class="text-center text-xs text-slate-500 py-4">No matching show found.</p>';
+                return;
+            }
+
+            list.forEach(drama => {
+                const opt = document.createElement('option');
+                opt.value = drama.id;
+                opt.innerText = `[${drama.category.toUpperCase()}] ${drama.title} (${drama.totalEps} Eps)`;
+                select.appendChild(opt);
+            });
+            onTargetDramaChange();
+        }
+
+        window.onTargetDramaChange = function() {
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            const container = document.getElementById('episodesListContainer');
+            if(!drama || !container) return;
+
+            container.innerHTML = '';
+            for(let i=1; i<=drama.totalEps; i++) {
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2';
+                row.innerHTML = `
+                    <span class="w-12 text-xs font-bold text-slate-400">Ep ${i}</span>
+                    <input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="Paste Embed or YouTube URL..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200">
+                `;
+                container.appendChild(row);
+            }
+        }
+
+        window.saveEpisodeLinks = function() {
+            const dramaId = document.getElementById('targetDramaSelect').value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            const episodes = {};
+            for(let i=1; i<=drama.totalEps; i++) {
+                const val = document.getElementById(`epInput_${i}`)?.value.trim();
+                if(val) episodes[i] = val;
+            }
+
+            drama.episodes = episodes;
+            set(ref(db, 'dramas/' + dramaId), drama).then(() => {
+                const status = document.getElementById('saveStatusText');
+                status.classList.remove('hidden');
+                setTimeout(() => status.classList.add('hidden'), 3000);
+            });
+        }
+
+        window.openEditModalCurrent = function() {
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            document.getElementById('editTitle').value = drama.title || '';
+            document.getElementById('editCategory').value = drama.category || 'china';
+            document.getElementById('editGenre').value = drama.genre || '';
+            document.getElementById('editTotalEps').value = drama.totalEps || 12;
+            document.getElementById('editRating').value = drama.rating || 9.0;
+            document.getElementById('editPoster').value = drama.poster || '';
+            document.getElementById('editDesc').value = drama.desc || '';
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        window.handleUpdateDrama = function(e) {
+            e.preventDefault();
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            drama.title = document.getElementById('editTitle').value;
+            drama.category = document.getElementById('editCategory').value;
+            drama.genre = document.getElementById('editGenre').value;
+            drama.totalEps = parseInt(document.getElementById('editTotalEps').value) || drama.totalEps;
+            drama.rating = parseFloat(document.getElementById('editRating').value) || drama.rating;
+            drama.poster = document.getElementById('editPoster').value;
+            drama.desc = document.getElementById('editDesc').value;
+
+            set(ref(db, 'dramas/' + dramaId), drama).then(() => {
+                alert('Show updated successfully!');
+                closeEditModal();
+            });
+        }
+
+        window.deleteCurrentShow = function() {
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            if(confirm(`Are you sure you want to delete "${drama.title}" permanently?`)) {
+                remove(ref(db, 'dramas/' + dramaId)).then(() => {
+                    alert('Show deleted successfully!');
+                });
+            }
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
