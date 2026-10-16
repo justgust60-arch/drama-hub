@@ -75,7 +75,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                         <i data-lucide="search" class="w-4 h-4"></i>
                     </div>
-                    <input type="text" id="searchInput" oninput="renderCatalog()" placeholder="Search shows..." 
+                    <input type="text" id="searchInput" oninput="currentPaginationPage=1; renderCatalog()" placeholder="Search shows..." 
                         class="w-full pl-9 pr-4 py-2 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500">
                 </div>
 
@@ -123,7 +123,7 @@
                     </h2>
                 </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <select id="genreFilter" onchange="renderCatalog()" class="flex-1 sm:flex-initial bg-slate-900 text-xs sm:text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-300">
+                    <select id="genreFilter" onchange="currentPaginationPage=1; renderCatalog()" class="flex-1 sm:flex-initial bg-slate-900 text-xs sm:text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-300">
                         <option value="all">All Genres</option>
                         <option value="Action">Action</option>
                         <option value="Fantasy">Fantasy</option>
@@ -136,6 +136,9 @@
 
             <div id="dramaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-5"></div>
             
+            <!-- PAGINATION CONTROLS CONTAINER -->
+            <div id="paginationContainer" class="flex items-center justify-center gap-2 pt-6"></div>
+
             <div id="emptyState" class="hidden text-center py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800 p-4">
                 <i data-lucide="film" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
                 <h3 class="text-lg font-medium text-slate-300">No shows found</h3>
@@ -185,7 +188,7 @@
                             </div>
                             <div>
                                 <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Rating</label>
-                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.0" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.0" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
                             </div>
                         </div>
                         <div>
@@ -200,24 +203,37 @@
                     </form>
                 </div>
 
-                <!-- Step 2: Add Episode Links -->
-                <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
+                <!-- Step 2: Upload Embed Links -->
+                <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-4">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i data-lucide="upload" class="w-5 h-5 text-indigo-400"></i> Step 2: Upload Embed / YouTube Links
                     </h3>
-                    <div class="flex items-center gap-2">
-                        <div class="flex-1">
-                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Show</label>
-                            <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-slate-100 font-medium"></select>
-                        </div>
-                        <!-- Quick Action Edit & Delete Buttons -->
-                        <div class="flex items-end gap-1.5 pt-5">
-                            <button onclick="openEditModalCurrent()" title="Edit Show Category/Details" class="px-3 py-3 bg-amber-600/80 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Show</label>
+                        <div class="flex items-center gap-2">
+                            <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 font-medium"></select>
+                            <button onclick="openEditModalCurrent()" title="Edit Show Category/Details" class="px-3 py-2.5 bg-amber-600/80 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 shrink-0">
                                 <i data-lucide="edit-3" class="w-4 h-4"></i> Edit
                             </button>
-                            <button onclick="deleteCurrentShow()" title="Delete Show" class="px-3 py-3 bg-rose-600/80 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+                            <button onclick="deleteCurrentShow()" title="Delete Show" class="px-3 py-2.5 bg-rose-600/80 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1 shrink-0">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN FILTER & SEARCH BAR -->
+                    <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 space-y-2">
+                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Filter Select Show Options</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <select id="adminCategoryFilter" onchange="populateAdminDropdowns()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200">
+                                <option value="all">All Categories</option>
+                                <option value="china">China Drama</option>
+                                <option value="korea">Korea Drama</option>
+                                <option value="action">Action Drama</option>
+                                <option value="anime">Anime</option>
+                            </select>
+                            <input type="text" id="adminSearchInput" oninput="populateAdminDropdowns()" placeholder="Search show name..." class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500">
                         </div>
                     </div>
 
@@ -226,7 +242,7 @@
                             <span>EPISODE</span>
                             <span>EMBED URL OR YOUTUBE LINK</span>
                         </div>
-                        <div id="episodesListContainer" class="max-h-[340px] overflow-y-auto space-y-2 pr-1"></div>
+                        <div id="episodesListContainer" class="max-h-[300px] overflow-y-auto space-y-2 pr-1"></div>
                     </div>
 
                     <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
@@ -355,6 +371,8 @@
         window.currentTab = 'all';
         window.currentDramaId = null;
         window.currentEpNum = 1;
+        window.currentPaginationPage = 1;
+        const ITEMS_PER_PAGE = 12;
 
         window.toggleMobileMenu = function() {
             const menu = document.getElementById('mobileMenu');
@@ -378,6 +396,7 @@
 
         window.setActiveTab = function(tab) {
             window.currentTab = tab;
+            window.currentPaginationPage = 1; // Reset to page 1 on tab switch
             document.getElementById('catalogSection').classList.toggle('hidden', tab === 'upload');
             document.getElementById('uploadSection').classList.toggle('hidden', tab !== 'upload');
             
@@ -411,7 +430,15 @@
             document.getElementById('dramaCount').innerText = list.length;
             document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
 
-            list.forEach(drama => {
+            // Pagination Logic: Slice 12 items per page
+            const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE) || 1;
+            if (window.currentPaginationPage > totalPages) window.currentPaginationPage = totalPages;
+            if (window.currentPaginationPage < 1) window.currentPaginationPage = 1;
+
+            const startIndex = (window.currentPaginationPage - 1) * ITEMS_PER_PAGE;
+            const paginatedList = list.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+            paginatedList.forEach(drama => {
                 let badgeText = 'Drama';
                 if (drama.category === 'china') badgeText = 'C-Drama';
                 else if (drama.category === 'korea') badgeText = 'K-Drama';
@@ -439,7 +466,56 @@
                 `;
                 grid.appendChild(card);
             });
+
+            renderPaginationControls(totalPages);
             lucide.createIcons();
+        }
+
+        window.renderPaginationControls = function(totalPages) {
+            const container = document.getElementById('paginationContainer');
+            container.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            // Prev Button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold border ${window.currentPaginationPage === 1 ? 'bg-slate-900 text-slate-600 border-slate-900 cursor-not-allowed' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+            prevBtn.innerText = 'Prev';
+            prevBtn.disabled = window.currentPaginationPage === 1;
+            prevBtn.onclick = () => {
+                if (window.currentPaginationPage > 1) {
+                    window.currentPaginationPage--;
+                    renderCatalog();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            };
+            container.appendChild(prevBtn);
+
+            // Page Number Buttons
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `w-9 h-9 rounded-xl text-xs font-bold border transition-all ${window.currentPaginationPage === i ? 'bg-rose-600 text-white border-rose-500 shadow-lg shadow-rose-600/30' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+                pageBtn.innerText = i;
+                pageBtn.onclick = () => {
+                    window.currentPaginationPage = i;
+                    renderCatalog();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                };
+                container.appendChild(pageBtn);
+            }
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold border ${window.currentPaginationPage === totalPages ? 'bg-slate-900 text-slate-600 border-slate-900 cursor-not-allowed' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+            nextBtn.innerText = 'Next';
+            nextBtn.disabled = window.currentPaginationPage === totalPages;
+            nextBtn.onclick = () => {
+                if (window.currentPaginationPage < totalPages) {
+                    window.currentPaginationPage++;
+                    renderCatalog();
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                }
+            };
+            container.appendChild(nextBtn);
         }
 
         window.openDramaDetail = function(id) {
@@ -529,12 +605,34 @@
 
         window.populateAdminDropdowns = function() {
             const select = document.getElementById('targetDramaSelect');
+            const catFilter = document.getElementById('adminCategoryFilter')?.value || 'all';
+            const searchVal = document.getElementById('adminSearchInput')?.value.toLowerCase() || '';
+
             if(!select) return;
             select.innerHTML = '';
-            Object.values(window.dramasData).forEach(drama => {
+
+            let list = Object.values(window.dramasData);
+
+            if (catFilter !== 'all') {
+                list = list.filter(d => d.category === catFilter);
+            }
+            if (searchVal) {
+                list = list.filter(d => d.title.toLowerCase().includes(searchVal));
+            }
+
+            if(list.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = '';
+                opt.innerText = '-- No Shows Found --';
+                select.appendChild(opt);
+                document.getElementById('episodesListContainer').innerHTML = '<p class="text-center text-xs text-slate-500 py-4">No matching show found.</p>';
+                return;
+            }
+
+            list.forEach(drama => {
                 const opt = document.createElement('option');
                 opt.value = drama.id;
-                opt.innerText = `${drama.title} (${drama.totalEps} Episodes)`;
+                opt.innerText = `[${drama.category.toUpperCase()}] ${drama.title} (${drama.totalEps} Eps)`;
                 select.appendChild(opt);
             });
             onTargetDramaChange();
@@ -577,7 +675,6 @@
             });
         }
 
-        // EDIT & DELETE FUNCTIONS
         window.openEditModalCurrent = function() {
             const dramaId = document.getElementById('targetDramaSelect')?.value;
             const drama = window.dramasData[dramaId];
