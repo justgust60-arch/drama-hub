@@ -143,6 +143,7 @@
             </div>
         </section>
 
+        <!-- ADMIN UPLOAD SECTION -->
         <section id="uploadSection" class="hidden space-y-6 sm:space-y-8">
             <div class="border-b border-slate-800 pb-4">
                 <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
@@ -152,6 +153,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
+                <!-- Step 1: Create New Show -->
                 <div class="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i data-lucide="plus-circle" class="w-5 h-5 text-rose-400"></i> Step 1: Add New Show
@@ -198,13 +200,25 @@
                     </form>
                 </div>
 
+                <!-- Step 2: Add Episode Links -->
                 <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
                     <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                         <i data-lucide="upload" class="w-5 h-5 text-indigo-400"></i> Step 2: Upload Embed / YouTube Links
                     </h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Show</label>
-                        <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-slate-100 font-medium"></select>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1">
+                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Show</label>
+                            <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-3 text-sm text-slate-100 font-medium"></select>
+                        </div>
+                        <!-- Quick Action Edit & Delete Buttons -->
+                        <div class="flex items-end gap-1.5 pt-5">
+                            <button onclick="openEditModalCurrent()" title="Edit Show Category/Details" class="px-3 py-3 bg-amber-600/80 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i> Edit
+                            </button>
+                            <button onclick="deleteCurrentShow()" title="Delete Show" class="px-3 py-3 bg-rose-600/80 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
+                            </button>
+                        </div>
                     </div>
 
                     <div class="space-y-2">
@@ -223,6 +237,61 @@
             </div>
         </section>
     </main>
+
+    <!-- MODAL EDIT SHOW -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4">
+        <div class="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="edit" class="w-5 h-5 text-amber-400"></i> Edit Show Details
+                </h3>
+                <button onclick="closeEditModal()" class="p-1.5 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <form onsubmit="handleUpdateDrama(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Title</label>
+                    <input type="text" id="editTitle" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-slate-100">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Category</label>
+                        <select id="editCategory" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                            <option value="china">China Drama</option>
+                            <option value="korea">Korea Drama</option>
+                            <option value="action">Action Drama</option>
+                            <option value="anime">Anime</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Genre</label>
+                        <input type="text" id="editGenre" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Total Episodes</label>
+                        <input type="number" id="editTotalEps" min="1" max="150" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Rating</label>
+                        <input type="number" id="editRating" min="1" max="10" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Cover Image URL</label>
+                    <input type="url" id="editPoster" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-slate-100">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Synopsis</label>
+                    <textarea id="editDesc" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-slate-100"></textarea>
+                </div>
+                <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-xs text-slate-300">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/20">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- MODAL PLAYER -->
     <div id="dramaModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4">
@@ -249,10 +318,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Scripts & Embed Logic -->
+    <!-- Firebase SDK Scripts & Logic -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAxDGz8hX-i8XC164GeksalQ5IZw_i3e5s",
@@ -403,7 +472,6 @@
             const iframe = document.getElementById('embedPlayer');
 
             if (url) {
-                // Auto convert YouTube watch to embed if needed
                 if(url.includes('watch?v=')) {
                     url = url.replace('watch?v=', 'embed/');
                 } else if(url.includes('youtu.be/')) {
@@ -507,6 +575,59 @@
                 status.classList.remove('hidden');
                 setTimeout(() => status.classList.add('hidden'), 3000);
             });
+        }
+
+        // EDIT & DELETE FUNCTIONS
+        window.openEditModalCurrent = function() {
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            document.getElementById('editTitle').value = drama.title || '';
+            document.getElementById('editCategory').value = drama.category || 'china';
+            document.getElementById('editGenre').value = drama.genre || '';
+            document.getElementById('editTotalEps').value = drama.totalEps || 12;
+            document.getElementById('editRating').value = drama.rating || 9.0;
+            document.getElementById('editPoster').value = drama.poster || '';
+            document.getElementById('editDesc').value = drama.desc || '';
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        window.handleUpdateDrama = function(e) {
+            e.preventDefault();
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            drama.title = document.getElementById('editTitle').value;
+            drama.category = document.getElementById('editCategory').value;
+            drama.genre = document.getElementById('editGenre').value;
+            drama.totalEps = parseInt(document.getElementById('editTotalEps').value) || drama.totalEps;
+            drama.rating = parseFloat(document.getElementById('editRating').value) || drama.rating;
+            drama.poster = document.getElementById('editPoster').value;
+            drama.desc = document.getElementById('editDesc').value;
+
+            set(ref(db, 'dramas/' + dramaId), drama).then(() => {
+                alert('Show updated successfully!');
+                closeEditModal();
+            });
+        }
+
+        window.deleteCurrentShow = function() {
+            const dramaId = document.getElementById('targetDramaSelect')?.value;
+            const drama = window.dramasData[dramaId];
+            if(!drama) return;
+
+            if(confirm(`Are you sure you want to delete "${drama.title}" permanently?`)) {
+                remove(ref(db, 'dramas/' + dramaId)).then(() => {
+                    alert('Show deleted successfully!');
+                });
+            }
         }
 
         lucide.createIcons();
