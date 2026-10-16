@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="theme-default">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DramaHub - C-Drama, K-Drama, Action & Anime Streaming Dashboard</title>
+    <title>DramaHub - Streaming Dashboard (C-Drama, K-Drama, Anime, Cartoon, Action)</title>
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,128 +13,314 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: { 50: '#fff1f2', 100: '#ffe4e6', 500: '#e11d48', 600: '#e11d48', 700: '#be123c', 800: '#9f1239', 900: '#881337' },
-                        kdrama: '#a855f7',
-                        cdrama: '#06b6d4'
+                        brand: {
+                            50: 'var(--color-brand-50)',
+                            100: 'var(--color-brand-100)',
+                            500: 'var(--color-brand-500)',
+                            600: 'var(--color-brand-600)',
+                            700: 'var(--color-brand-700)',
+                            800: 'var(--color-brand-800)',
+                            900: 'var(--color-brand-900)',
+                        }
                     }
                 }
             }
         }
     </script>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS Theme Definitions & Dynamic Styles -->
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        /* Base Dynamic Theme System */
+        :root {
+            /* Default Dark Theme (Slate/Rose Accent) */
+            --bg-main: #0b0f19;
+            --bg-card: rgba(18, 24, 38, 0.75);
+            --bg-card-solid: #121826;
+            --bg-header: rgba(11, 15, 25, 0.85);
+            --bg-input: #1a2234;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(225, 29, 72, 0.4);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-glow: rgba(225, 29, 72, 0.25);
+            --hero-gradient: linear-gradient(135deg, #0b0f19 0%, #311021 50%, #17102e 100%);
+            
+            --color-brand-50: #fff1f2;
+            --color-brand-100: #ffe4e6;
+            --color-brand-500: #f43f5e;
+            --color-brand-600: #e11d48;
+            --color-brand-700: #be123c;
+            --color-brand-800: #9f1239;
+            --color-brand-900: #881337;
+        }
+
+        /* Rose / Pink Theme */
+        html.theme-pink {
+            --bg-main: #140810;
+            --bg-card: rgba(36, 16, 28, 0.75);
+            --bg-card-solid: #24101c;
+            --bg-header: rgba(20, 8, 16, 0.85);
+            --bg-input: #2d1424;
+            --border-color: rgba(244, 114, 182, 0.15);
+            --border-accent: rgba(236, 72, 153, 0.5);
+            --text-main: #fdf2f8;
+            --text-muted: #f472b6;
+            --accent-glow: rgba(236, 72, 153, 0.3);
+            --hero-gradient: linear-gradient(135deg, #140810 0%, #4c0519 50%, #2e1022 100%);
+
+            --color-brand-50: #fdf2f8;
+            --color-brand-100: #fce7f3;
+            --color-brand-500: #ec4899;
+            --color-brand-600: #db2777;
+            --color-brand-700: #be185d;
+            --color-brand-800: #9d174d;
+            --color-brand-900: #831843;
+        }
+
+        /* Ocean Blue / Cyan Theme */
+        html.theme-blue {
+            --bg-main: #061325;
+            --bg-card: rgba(11, 29, 58, 0.75);
+            --bg-card-solid: #0b1d3a;
+            --bg-header: rgba(6, 19, 37, 0.85);
+            --bg-input: #102a52;
+            --border-color: rgba(56, 189, 248, 0.15);
+            --border-accent: rgba(14, 165, 233, 0.5);
+            --text-main: #f0f9ff;
+            --text-muted: #7dd3fc;
+            --accent-glow: rgba(14, 165, 233, 0.3);
+            --hero-gradient: linear-gradient(135deg, #061325 0%, #032b53 50%, #0c2140 100%);
+
+            --color-brand-50: #f0f9ff;
+            --color-brand-100: #e0f2fe;
+            --color-brand-500: #0ea5e9;
+            --color-brand-600: #0284c7;
+            --color-brand-700: #0369a1;
+            --color-brand-800: #075985;
+            --color-brand-900: #0c4a6e;
+        }
+
+        /* Pure Light / Snow Theme */
+        html.theme-white {
+            --bg-main: #f8fafc;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --bg-card-solid: #ffffff;
+            --bg-header: rgba(248, 250, 252, 0.85);
+            --bg-input: #f1f5f9;
+            --border-color: rgba(203, 213, 225, 0.8);
+            --border-accent: rgba(99, 102, 241, 0.5);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --hero-gradient: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 50%, #fae8ff 100%);
+
+            --color-brand-50: #eef2ff;
+            --color-brand-100: #e0e7ff;
+            --color-brand-500: #6366f1;
+            --color-brand-600: #4f46e5;
+            --color-brand-700: #4338ca;
+            --color-brand-800: #3730a3;
+            --color-brand-900: #312e81;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .glass-panel {
+            background: var(--bg-card);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid var(--border-color);
+        }
+
+        .glass-header {
+            background: var(--bg-header);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .input-themed {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .input-themed::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        .theme-card-shadow {
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+        }
+
+        /* Custom Scrollbars */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-input); border-radius: 4px; border: 1px solid var(--border-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--color-brand-600); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col bg-slate-950 text-slate-100 antialiased selection:bg-rose-500 selection:text-white overflow-x-hidden">
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white overflow-x-hidden">
 
-    <!-- Header / Navigation -->
-    <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-800/80">
+    <!-- HEADER / NAVIGATION BAR -->
+    <header class="sticky top-0 z-40 w-full glass-header transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16 gap-2 sm:gap-4">
-                <div class="flex items-center gap-2.5 cursor-pointer shrink-0" onclick="setActiveTab('all')">
-                    <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-rose-600 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
-                        <i data-lucide="tv" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+            <div class="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3 cursor-pointer shrink-0" onclick="setActiveTab('all')">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white shadow-lg theme-card-shadow">
+                        <i data-lucide="play-circle" class="w-6 h-6"></i>
                     </div>
-                    <span class="text-lg sm:text-xl font-bold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-purple-300 to-indigo-400">
-                        Drama<span class="text-rose-500">Hub</span>
+                    <span class="text-xl sm:text-2xl font-extrabold tracking-tight">
+                        Drama<span class="text-brand-500">Hub</span>
                     </span>
                 </div>
 
-                <nav class="hidden lg:flex items-center space-x-1">
-                    <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-rose-400 bg-slate-800/80 flex items-center gap-1.5">
+                <!-- Desktop Category Navigation -->
+                <nav class="hidden lg:flex items-center space-x-1.5">
+                    <button id="nav-all" onclick="setActiveTab('all')" class="nav-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-brand-500 bg-brand-500/10 flex items-center gap-1.5">
                         <i data-lucide="layout-grid" class="w-4 h-4"></i> All Shows
                     </button>
-                    <button id="nav-action" onclick="setActiveTab('action')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
-                        <span class="inline-block w-2 h-2 rounded-full bg-red-500"></span> Action
+                    <button id="nav-action" onclick="setActiveTab('action')" class="nav-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-brand-500 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span> Action
                     </button>
-                    <button id="nav-anime" onclick="setActiveTab('anime')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
-                        <span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span> Anime
+                    <button id="nav-anime" onclick="setActiveTab('anime')" class="nav-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-brand-500 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> Anime
                     </button>
-                    <button id="nav-china" onclick="setActiveTab('china')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
-                        <span class="inline-block w-2 h-2 rounded-full bg-cyan-400"></span> C-Drama
+                    <button id="nav-cartoon" onclick="setActiveTab('cartoon')" class="nav-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-brand-500 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Cartoon
                     </button>
-                    <button id="nav-korea" onclick="setActiveTab('korea')" class="nav-btn min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
-                        <span class="inline-block w-2 h-2 rounded-full bg-purple-400"></span> K-Drama
+                    <button id="nav-china" onclick="setActiveTab('china')" class="nav-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-brand-500 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400"></span> C-Drama
+                    </button>
+                    <button id="nav-korea" onclick="setActiveTab('korea')" class="nav-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-brand-500 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-purple-400"></span> K-Drama
                     </button>
                     
-                    <!-- ADMIN TAB (HIDDEN BY DEFAULT UNTIL LOGGED IN) -->
-                    <button id="nav-upload" onclick="setActiveTab('upload')" class="nav-btn hidden min-h-[44px] px-3.5 py-2 rounded-xl text-sm font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1.5">
-                        <i data-lucide="upload-cloud" class="w-4 h-4"></i> Admin / Upload
-                    </button>
-
-                    <!-- ADMIN LOGIN / LOGOUT BUTTON -->
-                    <button id="adminLoginBtn" onclick="handleAdminAuthBtn()" class="min-h-[44px] px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-rose-400 hover:bg-slate-800/50 flex items-center gap-1.5 ml-2 border border-slate-800">
-                        <i data-lucide="lock" class="w-3.5 h-3.5"></i> <span id="adminBtnText">Admin Login</span>
+                    <!-- Admin Tab (Visible when unlocked) -->
+                    <button id="nav-upload" onclick="setActiveTab('upload')" class="nav-btn hidden px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all text-slate-400 hover:text-brand-500 flex items-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Admin Panel
                     </button>
                 </nav>
 
-                <div class="flex-1 max-w-xs relative hidden sm:block">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                        <i data-lucide="search" class="w-4 h-4"></i>
+                <!-- Right Header Actions (Theme Selector & Admin Auth) -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <!-- Search Input -->
+                    <div class="relative hidden sm:block w-40 md:w-56">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="searchInput" oninput="currentPaginationPage=1; renderCatalog();" placeholder="Search shows..." 
+                            class="w-full pl-9 pr-3 py-2 rounded-xl text-xs input-themed focus:outline-none focus:ring-2 focus:ring-brand-500 transition-all">
                     </div>
-                    <input type="text" id="searchInput" oninput="currentPaginationPage=1; renderCatalog()" placeholder="Search shows..." 
-                        class="w-full pl-9 pr-4 py-2 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs sm:text-sm text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                </div>
 
-                <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 min-w-[44px] min-h-[44px] flex items-center justify-center">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                    <!-- THEME SELECTOR DROPDOWN -->
+                    <div class="relative inline-block text-left">
+                        <button onclick="toggleThemeDropdown()" class="px-3 py-2 rounded-xl text-xs font-semibold input-themed flex items-center gap-2 hover:border-brand-500/50 transition-all">
+                            <i data-lucide="palette" class="w-4 h-4 text-brand-500"></i>
+                            <span id="currentThemeName" class="hidden md:inline">Dark Theme</span>
+                            <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+                        </button>
+                        
+                        <div id="themeDropdown" class="hidden absolute right-0 mt-2 w-44 rounded-2xl glass-panel shadow-2xl p-1.5 z-50 space-y-1 border border-slate-700/50">
+                            <button onclick="setAppTheme('default')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between hover:bg-brand-500/10 hover:text-brand-500 transition-all">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-900 border border-slate-700"></span> Default Dark</span>
+                                <i id="check-default" data-lucide="check" class="w-3.5 h-3.5 text-brand-500 hidden"></i>
+                            </button>
+                            <button onclick="setAppTheme('pink')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between hover:bg-brand-500/10 hover:text-brand-500 transition-all">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-pink-500"></span> Rose / Pink</span>
+                                <i id="check-pink" data-lucide="check" class="w-3.5 h-3.5 text-brand-500 hidden"></i>
+                            </button>
+                            <button onclick="setAppTheme('blue')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between hover:bg-brand-500/10 hover:text-brand-500 transition-all">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-sky-500"></span> Ocean / Blue</span>
+                                <i id="check-blue" data-lucide="check" class="w-3.5 h-3.5 text-brand-500 hidden"></i>
+                            </button>
+                            <button onclick="setAppTheme('white')" class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between hover:bg-brand-500/10 hover:text-brand-500 transition-all">
+                                <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-100 border border-slate-300"></span> Pure White</span>
+                                <i id="check-white" data-lucide="check" class="w-3.5 h-3.5 text-brand-500 hidden"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Admin Auth Button -->
+                    <button id="adminLoginBtn" onclick="handleAdminAuthBtn()" class="px-3.5 py-2 rounded-xl text-xs font-bold transition-all input-themed flex items-center gap-1.5 hover:border-brand-500/50">
+                        <i data-lucide="lock" class="w-3.5 h-3.5 text-brand-500"></i>
+                        <span id="adminBtnText" class="hidden sm:inline">Admin Login</span>
+                    </button>
+
+                    <!-- Mobile Menu Button -->
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl input-themed flex items-center justify-center">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800 bg-slate-900/95 px-4 pt-3 pb-5 space-y-2.5">
-            <div class="grid grid-cols-2 gap-2 pt-1">
-                <button onclick="setActiveTab('all'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-200 bg-slate-800/80">All Shows</button>
-                <button onclick="setActiveTab('action'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-red-400 bg-red-950/40">Action</button>
-                <button onclick="setActiveTab('anime'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-amber-400 bg-amber-950/40">Anime</button>
-                <button onclick="setActiveTab('china'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-cyan-400 bg-cyan-950/40">C-Drama</button>
-                <button onclick="setActiveTab('korea'); toggleMobileMenu();" class="w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-purple-400 bg-purple-950/40">K-Drama</button>
-                <button id="mobileNavUpload" onclick="setActiveTab('upload'); toggleMobileMenu();" class="hidden w-full text-center px-3 py-2.5 rounded-xl text-xs font-semibold text-rose-400 bg-rose-950/40">Admin Upload</button>
-                <button onclick="handleAdminAuthBtn(); toggleMobileMenu();" class="col-span-2 w-full text-center px-3 py-2 rounded-xl text-xs font-semibold text-slate-400 border border-slate-800">
-                    <span id="mobileAdminBtnText">Admin Login</span>
-                </button>
+        <!-- Mobile Collapsible Navigation Menu -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-800/80 bg-slate-900/95 px-4 pt-3 pb-5 space-y-3">
+            <div class="relative">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" oninput="currentPaginationPage=1; renderCatalog();" placeholder="Search shows..." class="w-full pl-9 pr-3 py-2.5 rounded-xl text-xs input-themed">
             </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="setActiveTab('all'); toggleMobileMenu();" class="px-3 py-2.5 rounded-xl text-xs font-semibold bg-brand-500/20 text-brand-500">All Shows</button>
+                <button onclick="setActiveTab('action'); toggleMobileMenu();" class="px-3 py-2.5 rounded-xl text-xs font-semibold text-red-400 bg-red-950/40">Action</button>
+                <button onclick="setActiveTab('anime'); toggleMobileMenu();" class="px-3 py-2.5 rounded-xl text-xs font-semibold text-amber-400 bg-amber-950/40">Anime</button>
+                <button onclick="setActiveTab('cartoon'); toggleMobileMenu();" class="px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-400 bg-emerald-950/40">Cartoon</button>
+                <button onclick="setActiveTab('china'); toggleMobileMenu();" class="px-3 py-2.5 rounded-xl text-xs font-semibold text-cyan-400 bg-cyan-950/40">C-Drama</button>
+                <button onclick="setActiveTab('korea'); toggleMobileMenu();" class="px-3 py-2.5 rounded-xl text-xs font-semibold text-purple-400 bg-purple-950/40">K-Drama</button>
+            </div>
+            <button id="mobileNavUpload" onclick="setActiveTab('upload'); toggleMobileMenu();" class="hidden w-full py-2.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/50 flex items-center justify-center gap-2">
+                <i data-lucide="shield-check" class="w-4 h-4"></i> Admin Upload Panel
+            </button>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+    <!-- MAIN DASHBOARD CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-6 space-y-8">
 
-        <section id="catalogSection" class="space-y-6 sm:space-y-8">
-            <div id="heroBanner" class="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-rose-950 to-indigo-950 border border-slate-800 p-5 sm:p-8 md:p-10 shadow-2xl">
-                <div class="relative z-10 max-w-2xl space-y-3 sm:space-y-4">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-rose-500/20 text-rose-400 border border-rose-500/30">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Featured Release
+        <!-- CATALOG SHOWS SECTION -->
+        <section id="catalogSection" class="space-y-6">
+            
+            <!-- Hero Featured Release Banner -->
+            <div id="heroBanner" class="relative rounded-3xl overflow-hidden p-6 sm:p-10 border border-slate-800/80 shadow-2xl transition-all duration-300" style="background: var(--hero-gradient)">
+                <div class="relative z-10 max-w-2xl space-y-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-500/20 text-brand-500 border border-brand-500/30">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Synchronized Realtime Cloud Database
                     </span>
-                    <h1 id="heroTitle" class="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-tight">DramaHub Streaming</h1>
-                    <p id="heroDesc" class="text-slate-300 text-xs sm:text-sm md:text-base line-clamp-2">Stream your favorite Anime, Action, C-Dramas, and K-Dramas synced live via Firebase cloud database.</p>
-                    <div id="heroAdminBtnContainer" class="hidden flex flex-wrap items-center gap-2.5 pt-1">
-                        <button onclick="setActiveTab('upload')" class="min-h-[44px] px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm border border-slate-700 flex items-center gap-2">
-                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Episode Links
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Stream Live Drama & Anime</h1>
+                    <p class="text-xs sm:text-sm text-slate-300/80 leading-relaxed">
+                        Enjoy the latest Action series, Chinese Dramas, Korean Dramas, Anime & Animated Cartoons in HD quality. Filter, search and enjoy!
+                    </p>
+                    <div id="heroAdminBtnContainer" class="hidden pt-2">
+                        <button onclick="setActiveTab('upload')" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-brand-600 hover:bg-brand-500 text-white flex items-center gap-2 shadow-lg theme-card-shadow">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> Manage Catalog & Episodes
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+            <!-- Filter & Section Title Header -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800/60 pb-4">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                        All Shows <span id="dramaCount" class="text-xs font-normal px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>
+                    <h2 class="text-xl sm:text-2xl font-extrabold flex items-center gap-2">
+                        Show Collection <span id="dramaCount" class="text-xs font-bold px-2.5 py-0.5 rounded-full input-themed text-brand-500">0</span>
                     </h2>
                 </div>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <select id="genreFilter" onchange="currentPaginationPage=1; renderCatalog()" class="flex-1 sm:flex-initial bg-slate-900 text-xs sm:text-sm border border-slate-700 rounded-xl px-3 py-2.5 text-slate-300">
+                    <select id="genreFilter" onchange="currentPaginationPage=1; renderCatalog();" class="w-full sm:w-auto text-xs font-semibold px-3 py-2.5 rounded-xl input-themed focus:outline-none">
                         <option value="all">All Genres</option>
                         <option value="Action">Action</option>
                         <option value="Fantasy">Fantasy</option>
@@ -144,212 +331,238 @@
                 </div>
             </div>
 
-            <div id="dramaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-5"></div>
-            
-            <!-- PAGINATION CONTROLS CONTAINER -->
+            <!-- Main Shows Responsive Grid -->
+            <div id="dramaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-5"></div>
+
+            <!-- Dynamic Pagination Container -->
             <div id="paginationContainer" class="flex items-center justify-center gap-2 pt-6"></div>
 
-            <div id="emptyState" class="hidden text-center py-16 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800 p-4">
-                <i data-lucide="film" class="w-12 h-12 text-slate-600 mx-auto mb-3"></i>
-                <h3 class="text-lg font-medium text-slate-300">No shows found</h3>
+            <!-- Empty State Fallback -->
+            <div id="emptyState" class="hidden text-center py-16 glass-panel rounded-3xl border border-dashed border-slate-700 p-6">
+                <i data-lucide="film" class="w-12 h-12 text-slate-500 mx-auto mb-3"></i>
+                <h3 class="text-base font-bold text-slate-300">No Shows Found</h3>
+                <p class="text-xs text-slate-500 mt-1">Try choosing a different genre or searching another keyword.</p>
             </div>
         </section>
 
-        <!-- ADMIN UPLOAD SECTION (HIDDEN BY DEFAULT) -->
-        <section id="uploadSection" class="hidden space-y-6 sm:space-y-8">
-            <div class="border-b border-slate-800 pb-4">
-                <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-                    <i data-lucide="database" class="w-6 h-6 text-rose-500"></i> Cloud Firebase Management Panel
-                </h2>
-                <p class="text-slate-400 text-xs sm:text-sm mt-1">Changes made here are synced live to the cloud and visible to your friends instantly.</p>
+        <!-- ADMIN MANAGEMENT SECTION (PROTECTED BY PIN) -->
+        <section id="uploadSection" class="hidden space-y-8">
+            <div class="border-b border-slate-800/80 pb-4 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold flex items-center gap-2">
+                        <i data-lucide="database" class="w-6 h-6 text-brand-500"></i> Realtime Cloud Firebase Management
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Manage shows, add series details, and upload episode embed/YouTube streaming links live.</p>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
-                <!-- Step 1: Create New Show -->
-                <div class="lg:col-span-5 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-5">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                        <i data-lucide="plus-circle" class="w-5 h-5 text-rose-400"></i> Step 1: Add New Show
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- STEP 1: CREATE NEW SHOW -->
+                <div class="lg:col-span-5 glass-panel rounded-3xl p-5 border border-slate-800 space-y-4">
+                    <h3 class="text-sm font-extrabold flex items-center gap-2 border-b border-slate-800/80 pb-3">
+                        <i data-lucide="plus-circle" class="w-4 h-4 text-brand-500"></i> Step 1: Add New Show Series
                     </h3>
-                    <form id="newDramaForm" onsubmit="handleCreateDrama(event)" class="space-y-4">
+                    <form id="newDramaForm" onsubmit="handleCreateDrama(event)" class="space-y-3.5">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Title</label>
-                            <input type="text" id="addTitle" required placeholder="e.g. Show Title" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Show Title</label>
+                            <input type="text" id="addTitle" required placeholder="e.g. Solo Leveling" class="w-full text-xs font-medium px-3.5 py-2.5 rounded-xl input-themed">
                         </div>
-                        <div class="grid grid-cols-2 gap-3.5">
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Category</label>
-                                <select id="addCategory" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Category</label>
+                                <select id="addCategory" class="w-full text-xs font-semibold px-3 py-2.5 rounded-xl input-themed">
+                                    <option value="action">Action</option>
+                                    <option value="anime">Anime</option>
+                                    <option value="cartoon">Cartoon</option>
                                     <option value="china">China Drama</option>
                                     <option value="korea">Korea Drama</option>
-                                    <option value="action">Action Drama</option>
-                                    <option value="anime">Anime</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Genre</label>
-                                <input type="text" id="addGenre" required placeholder="Action / Fantasy" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Genre</label>
+                                <input type="text" id="addGenre" required placeholder="Action, Fantasy" class="w-full text-xs font-medium px-3 py-2.5 rounded-xl input-themed">
                             </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-3.5">
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Total Episodes</label>
-                                <input type="number" id="addTotalEps" min="1" max="150" value="12" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-slate-100">
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Total Episodes</label>
+                                <input type="number" id="addTotalEps" min="1" max="150" value="12" required class="w-full text-xs font-medium px-3 py-2.5 rounded-xl input-themed">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Rating</label>
-                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.0" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
+                                <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Rating</label>
+                                <input type="number" id="addRating" min="1" max="10" step="0.1" value="9.2" required class="w-full text-xs font-medium px-3 py-2.5 rounded-xl input-themed">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Cover Image URL</label>
-                            <input type="url" id="addPoster" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100">
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Poster Image URL</label>
+                            <input type="url" id="addPoster" placeholder="https://..." class="w-full text-xs font-medium px-3.5 py-2.5 rounded-xl input-themed">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Synopsis</label>
-                            <textarea id="addDesc" rows="3" placeholder="Show description..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100"></textarea>
+                            <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Synopsis</label>
+                            <textarea id="addDesc" rows="3" placeholder="Overview of the show..." class="w-full text-xs font-medium px-3.5 py-2.5 rounded-xl input-themed"></textarea>
                         </div>
-                        <button type="submit" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-xl text-sm shadow-lg shadow-rose-600/20">Create Show Series</button>
+                        <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl text-xs shadow-lg theme-card-shadow transition-all">
+                            Create Show Series
+                        </button>
                     </form>
                 </div>
 
-                <!-- Step 2: Upload Embed Links -->
-                <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-4">
-                    <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
-                        <i data-lucide="upload" class="w-5 h-5 text-indigo-400"></i> Step 2: Upload Embed / YouTube Links
+                <!-- STEP 2: EPISODE LINK UPLOAD & EDIT / DELETE -->
+                <div class="lg:col-span-7 glass-panel rounded-3xl p-5 border border-slate-800 space-y-4">
+                    <h3 class="text-sm font-extrabold flex items-center gap-2 border-b border-slate-800/80 pb-3">
+                        <i data-lucide="upload-cloud" class="w-4 h-4 text-indigo-400"></i> Step 2: Episode Video Link Uploads
                     </h3>
 
-                    <!-- ADMIN FILTER & SEARCH BAR -->
-                    <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800/80 space-y-2">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Filter Select Show Options</span>
+                    <!-- Filter Dropdown Options Inside Border -->
+                    <div class="p-3 rounded-2xl input-themed space-y-2">
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block">Filter Selectable Show Options</span>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <select id="adminCategoryFilter" onchange="populateAdminDropdowns()" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200">
+                            <select id="adminCategoryFilter" onchange="populateAdminDropdowns()" class="text-xs font-semibold px-3 py-2 rounded-xl input-themed">
                                 <option value="all">All Categories</option>
+                                <option value="action">Action</option>
+                                <option value="anime">Anime</option>
+                                <option value="cartoon">Cartoon</option>
                                 <option value="china">China Drama</option>
                                 <option value="korea">Korea Drama</option>
-                                <option value="action">Action Drama</option>
-                                <option value="anime">Anime</option>
                             </select>
-                            <input type="text" id="adminSearchInput" oninput="populateAdminDropdowns()" placeholder="Search show name..." class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200 placeholder-slate-500">
+                            <input type="text" id="adminSearchInput" oninput="populateAdminDropdowns()" placeholder="Search show name..." class="text-xs font-medium px-3 py-2 rounded-xl input-themed">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1.5">Select Show</label>
-                        <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-100 font-medium"></select>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">Selected Target Show</label>
+                        <select id="targetDramaSelect" onchange="onTargetDramaChange()" class="w-full text-xs font-bold px-3.5 py-2.5 rounded-xl input-themed"></select>
                     </div>
 
-                    <!-- EDIT & DELETE BUTTONS -->
+                    <!-- Inside Border Action Buttons (Edit & Delete) -->
                     <div class="flex items-center gap-2 pt-1">
-                        <button onclick="openEditModalCurrent()" class="flex-1 py-2.5 bg-amber-600/80 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
-                            <i data-lucide="edit-3" class="w-4 h-4"></i> Edit Show Details
+                        <button onclick="openEditModalCurrent()" class="flex-1 py-2.5 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
+                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Edit Show Details
                         </button>
-                        <button onclick="deleteCurrentShow()" class="flex-1 py-2.5 bg-rose-600/80 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i> Delete Show
+                        <button onclick="deleteCurrentShow()" class="flex-1 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete Show
                         </button>
                     </div>
 
+                    <!-- Episode Links Input Scrollable Container -->
                     <div class="space-y-2 pt-2">
-                        <div class="flex items-center justify-between text-[11px] text-slate-400 font-semibold px-1">
-                            <span>EPISODE</span>
-                            <span>EMBED URL OR YOUTUBE LINK</span>
+                        <div class="flex items-center justify-between text-[10px] font-extrabold text-slate-400 uppercase tracking-wider px-1">
+                            <span>Episode Number</span>
+                            <span>Embed / YouTube Video URL</span>
                         </div>
                         <div id="episodesListContainer" class="max-h-[260px] overflow-y-auto space-y-2 pr-1"></div>
                     </div>
 
-                    <div class="pt-2 border-t border-slate-800 flex items-center justify-between">
-                        <span id="saveStatusText" class="text-xs text-emerald-400 font-medium hidden">Saved successfully to Firebase!</span>
-                        <button type="button" onclick="saveEpisodeLinks()" class="ml-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-indigo-600/20">Save to Cloud</button>
+                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                        <span id="saveStatusText" class="text-xs text-emerald-400 font-bold hidden flex items-center gap-1">
+                            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Saved successfully to Cloud Firebase!
+                        </span>
+                        <button type="button" onclick="saveEpisodeLinks()" class="ml-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-xl shadow-lg transition-all">
+                            Save Episode Links
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- MODAL EDIT SHOW -->
-    <div id="editModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4">
-        <div class="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-5 space-y-4">
+    <!-- MODAL 1: EDIT SHOW DETAILS MODAL -->
+    <div id="editModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-3">
+        <div class="relative w-full max-w-lg glass-panel rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-700">
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="edit" class="w-5 h-5 text-amber-400"></i> Edit Show Details
+                <h3 class="text-base font-bold flex items-center gap-2">
+                    <i data-lucide="edit" class="w-4 h-4 text-amber-400"></i> Edit Show Series Details
                 </h3>
-                <button onclick="closeEditModal()" class="p-1.5 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="closeEditModal()" class="p-1 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <form onsubmit="handleUpdateDrama(event)" class="space-y-3.5">
+            <form onsubmit="handleUpdateDrama(event)" class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Title</label>
-                    <input type="text" id="editTitle" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-slate-100">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Title</label>
+                    <input type="text" id="editTitle" required class="w-full text-xs font-medium px-3.5 py-2 rounded-xl input-themed">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Category</label>
-                        <select id="editCategory" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Category</label>
+                        <select id="editCategory" class="w-full text-xs font-semibold px-3 py-2 rounded-xl input-themed">
+                            <option value="action">Action</option>
+                            <option value="anime">Anime</option>
+                            <option value="cartoon">Cartoon</option>
                             <option value="china">China Drama</option>
                             <option value="korea">Korea Drama</option>
-                            <option value="action">Action Drama</option>
-                            <option value="anime">Anime</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Genre</label>
-                        <input type="text" id="editGenre" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Genre</label>
+                        <input type="text" id="editGenre" required class="w-full text-xs font-medium px-3 py-2 rounded-xl input-themed">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Total Episodes</label>
-                        <input type="number" id="editTotalEps" min="1" max="150" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Total Episodes</label>
+                        <input type="number" id="editTotalEps" min="1" max="150" required class="w-full text-xs font-medium px-3 py-2 rounded-xl input-themed">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Rating</label>
-                        <input type="number" id="editRating" min="1" max="10" step="0.1" required class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100">
+                        <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Rating</label>
+                        <input type="number" id="editRating" min="1" max="10" step="0.1" required class="w-full text-xs font-medium px-3 py-2 rounded-xl input-themed">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Cover Image URL</label>
-                    <input type="url" id="editPoster" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-slate-100">
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Cover Image URL</label>
+                    <input type="url" id="editPoster" class="w-full text-xs font-medium px-3.5 py-2 rounded-xl input-themed">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase mb-1">Synopsis</label>
-                    <textarea id="editDesc" rows="2" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-slate-100"></textarea>
+                    <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Synopsis</label>
+                    <textarea id="editDesc" rows="2" class="w-full text-xs font-medium px-3.5 py-2 rounded-xl input-themed"></textarea>
                 </div>
                 <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800">
-                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-xs text-slate-300">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg shadow-amber-600/20">Save Changes</button>
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 rounded-xl input-themed text-xs font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white shadow-lg">Save Updates</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- MODAL PLAYER -->
-    <div id="dramaModal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md overflow-y-auto flex items-center justify-center p-2 sm:p-4">
-        <div class="relative w-full max-w-5xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden my-auto max-h-[96vh] flex flex-col">
-            <div class="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-slate-800 bg-slate-900 sticky top-0 z-20">
-                <h3 id="modalTitle" class="text-lg font-bold text-white truncate">Show Title</h3>
-                <button onclick="closeModal()" class="p-2 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
+    <!-- MODAL 2: STREAMING VIDEO PLAYER MODAL -->
+    <div id="dramaModal" class="fixed inset-0 z-50 hidden bg-slate-950/85 backdrop-blur-md overflow-y-auto flex items-center justify-center p-3">
+        <div class="relative w-full max-w-5xl glass-panel rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[96vh] flex flex-col border border-slate-800">
+            
+            <!-- Video Modal Header -->
+            <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-800/80 bg-slate-900/60 sticky top-0 z-20">
+                <h3 id="modalTitle" class="text-base font-extrabold truncate">Show Video Player</h3>
+                <button onclick="closeModal()" class="p-1.5 text-slate-400 hover:text-white rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <div class="overflow-y-auto p-4 sm:p-6 space-y-6 flex-1">
-                <div class="relative w-full bg-black rounded-xl overflow-hidden border border-slate-800 aspect-video shadow-2xl flex items-center justify-center">
+
+            <div class="overflow-y-auto p-4 sm:p-6 space-y-5 flex-1">
+                <!-- Video Player Container -->
+                <div class="relative w-full bg-black rounded-2xl overflow-hidden border border-slate-800 aspect-video shadow-2xl flex items-center justify-center">
                     <iframe id="embedPlayer" class="w-full h-full" src="" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
                 </div>
-                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
-                    <button onclick="navigateEpisode(-1)" class="px-4 py-1.5 rounded-lg bg-slate-800 text-xs font-semibold text-slate-300">Prev</button>
-                    <span id="currentEpisodeLabel" class="text-xs text-rose-400 font-bold">Episode 1</span>
-                    <button onclick="navigateEpisode(1)" class="px-4 py-1.5 rounded-lg bg-slate-800 text-xs font-semibold text-slate-300">Next</button>
+
+                <!-- Episode Navigation Bar -->
+                <div class="flex items-center justify-between p-3 rounded-2xl input-themed">
+                    <button onclick="navigateEpisode(-1)" class="px-4 py-1.5 rounded-xl input-themed text-xs font-bold hover:border-brand-500/50">Prev Ep</button>
+                    <span id="currentEpisodeLabel" class="text-xs text-brand-500 font-extrabold">Episode 1</span>
+                    <button onclick="navigateEpisode(1)" class="px-4 py-1.5 rounded-xl input-themed text-xs font-bold hover:border-brand-500/50">Next Ep</button>
                 </div>
-                <p id="modalDesc" class="text-slate-300 text-sm"></p>
+
+                <p id="modalDesc" class="text-xs text-slate-300 leading-relaxed"></p>
+
+                <!-- Episode Selection Grid -->
                 <div class="space-y-2">
-                    <h4 class="text-sm font-bold text-white">Select Episode</h4>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Select Episode</h4>
                     <div id="episodesGrid" class="grid grid-cols-6 sm:grid-cols-10 gap-2 max-h-48 overflow-y-auto pr-1"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK Scripts & Auth Logic -->
+    <!-- FIREBASE REALTIME DATABASE & APPLICATION LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAxDGz8hX-i8XC164GeksalQ5IZw_i3e5s",
             authDomain: "dramahub-1f226.firebaseapp.com",
@@ -366,20 +579,33 @@
 
         const ADMIN_PIN = "DramaHub010101";
 
+        // Default Initial Mock Data if Database is empty
         const defaultDramas = {
             "d1": {
                 id: "d1",
-                title: "The King Kong: Eternal Empire",
-                category: "china",
-                genre: "Fantasy, Action",
-                totalEps: 10,
-                rating: 9.5,
+                title: "Demon Slayer: Kimetsu no Yaiba",
+                category: "anime",
+                genre: "Action, Fantasy",
+                totalEps: 12,
+                rating: 9.8,
                 poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop",
-                desc: "An epic fantasy drama following ancient guardians defending the realm.",
+                desc: "A young man fights demons and seeks a cure for his sister.",
+                episodes: { 1: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
+            },
+            "d2": {
+                id: "d2",
+                title: "Avatar: The Last Airbender",
+                category: "cartoon",
+                genre: "Adventure, Fantasy",
+                totalEps: 20,
+                rating: 9.9,
+                poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
+                desc: "A young Avatar must master all four elements to save the world.",
                 episodes: { 1: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
             }
         };
 
+        // Application Global States
         window.dramasData = {};
         window.currentTab = 'all';
         window.currentDramaId = null;
@@ -388,64 +614,86 @@
         window.isAdminLoggedIn = false;
         const ITEMS_PER_PAGE = 12;
 
-        // CHECK ADMIN LOGIN STATUS ON PAGE LOAD
+        // On Page Load Initialization
         window.addEventListener('DOMContentLoaded', () => {
+            // Restore Saved Theme
+            const savedTheme = localStorage.getItem('dramahub_theme') || 'default';
+            setAppTheme(savedTheme);
+
+            // Restore Admin Auth Session
             if (localStorage.getItem('dramahub_admin_auth') === 'true') {
                 window.isAdminLoggedIn = true;
                 updateAdminUI();
             }
         });
 
+        // Dynamic Theme Switcher Logic
+        window.toggleThemeDropdown = function() {
+            const dropdown = document.getElementById('themeDropdown');
+            dropdown.classList.toggle('hidden');
+        };
+
+        window.setAppTheme = function(theme) {
+            const html = document.documentElement;
+            html.className = ''; // Reset classes
+            html.classList.add(`theme-${theme}`);
+            
+            localStorage.setItem('dramahub_theme', theme);
+
+            // Update Checkmark Icons & Theme Label Text
+            ['default', 'pink', 'blue', 'white'].forEach(t => {
+                const check = document.getElementById(`check-${t}`);
+                if (check) check.classList.toggle('hidden', t !== theme);
+            });
+
+            const labels = {
+                'default': 'Dark Theme',
+                'pink': 'Rose / Pink',
+                'blue': 'Ocean Blue',
+                'white': 'Pure White'
+            };
+            const labelEl = document.getElementById('currentThemeName');
+            if (labelEl) labelEl.innerText = labels[theme] || 'Dark Theme';
+
+            // Close dropdown if open
+            document.getElementById('themeDropdown')?.classList.add('hidden');
+        };
+
+        // Admin Auth Login / Logout PIN
         window.handleAdminAuthBtn = function() {
             if (window.isAdminLoggedIn) {
-                if (confirm('Do you want to logout from Admin mode?')) {
+                if (confirm('Logout from Admin mode?')) {
                     window.isAdminLoggedIn = false;
                     localStorage.removeItem('dramahub_admin_auth');
                     updateAdminUI();
                     setActiveTab('all');
                 }
             } else {
-                const code = prompt('Enter Admin Access PIN:');
-                if (code === ADMIN_PIN) {
+                const pin = prompt('Enter Admin Access PIN:');
+                if (pin === ADMIN_PIN) {
                     window.isAdminLoggedIn = true;
                     localStorage.setItem('dramahub_admin_auth', 'true');
                     updateAdminUI();
-                    alert('Admin Access Granted!');
-                } else if (code !== null) {
+                    alert('Admin PIN Correct! Panel unlocked.');
+                } else if (pin !== null) {
                     alert('Incorrect PIN code!');
                 }
             }
-        }
+        };
 
         function updateAdminUI() {
             const isAuth = window.isAdminLoggedIn;
-            
-            // Toggle Nav and Hero Admin Elements
             document.getElementById('nav-upload')?.classList.toggle('hidden', !isAuth);
             document.getElementById('mobileNavUpload')?.classList.toggle('hidden', !isAuth);
             document.getElementById('heroAdminBtnContainer')?.classList.toggle('hidden', !isAuth);
-
-            // Change Login/Logout Button Text
             document.getElementById('adminBtnText').innerText = isAuth ? 'Logout Admin' : 'Admin Login';
-            document.getElementById('mobileAdminBtnText').innerText = isAuth ? 'Logout Admin' : 'Admin Login';
-            
-            const loginBtn = document.getElementById('adminLoginBtn');
-            if (loginBtn) {
-                if (isAuth) {
-                    loginBtn.classList.add('text-rose-400', 'border-rose-500/50');
-                } else {
-                    loginBtn.classList.remove('text-rose-400', 'border-rose-500/50');
-                }
-            }
         }
 
         window.toggleMobileMenu = function() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) {
-                menu.classList.toggle('hidden');
-            }
-        }
+            document.getElementById('mobileMenu')?.classList.toggle('hidden');
+        };
 
+        // Firebase RTDB Listener
         const dramasRef = ref(db, 'dramas');
         onValue(dramasRef, (snapshot) => {
             const data = snapshot.val();
@@ -459,30 +707,32 @@
             populateAdminDropdowns();
         });
 
+        // Navigation Tab Handler
         window.setActiveTab = function(tab) {
             if (tab === 'upload' && !window.isAdminLoggedIn) {
-                alert('Admin Access Required!');
+                alert('Admin PIN Access Required!');
                 return;
             }
 
             window.currentTab = tab;
             window.currentPaginationPage = 1;
+
             document.getElementById('catalogSection').classList.toggle('hidden', tab === 'upload');
             document.getElementById('uploadSection').classList.toggle('hidden', tab !== 'upload');
             
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('text-rose-400', 'bg-slate-800/80');
+                btn.classList.remove('text-brand-500', 'bg-brand-500/10');
                 btn.classList.add('text-slate-400');
             });
-            if(tab === 'all') document.getElementById('nav-all')?.classList.add('text-rose-400', 'bg-slate-800/80');
-            if(tab === 'action') document.getElementById('nav-action')?.classList.add('text-rose-400', 'bg-slate-800/80');
-            if(tab === 'anime') document.getElementById('nav-anime')?.classList.add('text-rose-400', 'bg-slate-800/80');
-            if(tab === 'china') document.getElementById('nav-china')?.classList.add('text-rose-400', 'bg-slate-800/80');
-            if(tab === 'korea') document.getElementById('nav-korea')?.classList.add('text-rose-400', 'bg-slate-800/80');
-            if(tab === 'upload') document.getElementById('nav-upload')?.classList.add('text-rose-400', 'bg-slate-800/80');
-            renderCatalog();
-        }
+            const activeBtn = document.getElementById(`nav-${tab}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-brand-500', 'bg-brand-500/10');
+            }
 
+            renderCatalog();
+        };
+
+        // Render Catalog Cards
         window.renderCatalog = function() {
             const grid = document.getElementById('dramaGrid');
             const genreVal = document.getElementById('genreFilter')?.value || 'all';
@@ -490,16 +740,22 @@
             grid.innerHTML = '';
 
             let list = Object.values(window.dramasData);
+
+            // Filter Categories
             if (window.currentTab === 'action') list = list.filter(d => d.category === 'action' || (d.genre && d.genre.toLowerCase().includes('action')));
             if (window.currentTab === 'anime') list = list.filter(d => d.category === 'anime' || (d.genre && d.genre.toLowerCase().includes('anime')));
+            if (window.currentTab === 'cartoon') list = list.filter(d => d.category === 'cartoon' || (d.genre && d.genre.toLowerCase().includes('cartoon')));
             if (window.currentTab === 'china') list = list.filter(d => d.category === 'china');
             if (window.currentTab === 'korea') list = list.filter(d => d.category === 'korea');
+            
+            // Filter Genre & Search
             if (genreVal !== 'all') list = list.filter(d => d.genre && d.genre.includes(genreVal));
-            if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal) || d.genre.toLowerCase().includes(searchVal));
+            if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal) || (d.genre && d.genre.toLowerCase().includes(searchVal)));
 
             document.getElementById('dramaCount').innerText = list.length;
             document.getElementById('emptyState').classList.toggle('hidden', list.length > 0);
 
+            // Pagination calculation
             const totalPages = Math.ceil(list.length / ITEMS_PER_PAGE) || 1;
             if (window.currentPaginationPage > totalPages) window.currentPaginationPage = totalPages;
             if (window.currentPaginationPage < 1) window.currentPaginationPage = 1;
@@ -509,26 +765,28 @@
 
             paginatedList.forEach(drama => {
                 let badgeText = 'Drama';
-                if (drama.category === 'china') badgeText = 'C-Drama';
-                else if (drama.category === 'korea') badgeText = 'K-Drama';
-                else if (drama.category === 'action') badgeText = 'Action';
-                else if (drama.category === 'anime') badgeText = 'Anime';
+                let badgeBg = 'bg-slate-800 text-slate-300';
+                if (drama.category === 'china') { badgeText = 'C-Drama'; badgeBg = 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30'; }
+                else if (drama.category === 'korea') { badgeText = 'K-Drama'; badgeBg = 'bg-purple-500/20 text-purple-400 border-purple-500/30'; }
+                else if (drama.category === 'action') { badgeText = 'Action'; badgeBg = 'bg-red-500/20 text-red-400 border-red-500/30'; }
+                else if (drama.category === 'anime') { badgeText = 'Anime'; badgeBg = 'bg-amber-500/20 text-amber-400 border-amber-500/30'; }
+                else if (drama.category === 'cartoon') { badgeText = 'Cartoon'; badgeBg = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'; }
 
                 const card = document.createElement('div');
-                card.className = 'glass-panel rounded-xl overflow-hidden border border-slate-800 hover:border-rose-500/50 transition-all cursor-pointer group flex flex-col';
+                card.className = 'glass-panel rounded-2xl overflow-hidden border border-slate-800/80 hover:border-brand-500/50 transition-all cursor-pointer group flex flex-col hover:-translate-y-1';
                 card.onclick = () => openDramaDetail(drama.id);
                 card.innerHTML = `
                     <div class="relative aspect-[3/4] overflow-hidden bg-slate-900">
                         <img src="${drama.poster || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400'}" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-300">
-                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950/80 text-rose-400 border border-slate-700">${badgeText}</span>
+                        <span class="absolute top-2 left-2 px-2 py-0.5 rounded-md text-[10px] font-extrabold border ${badgeBg}">${badgeText}</span>
                     </div>
-                    <div class="p-3 flex flex-col flex-1 justify-between">
+                    <div class="p-3 flex flex-col flex-1 justify-between space-y-2">
                         <div>
-                            <h4 class="font-bold text-sm text-white line-clamp-1 group-hover:text-rose-400 transition-colors">${drama.title}</h4>
-                            <p class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${drama.genre}</p>
+                            <h4 class="font-bold text-xs sm:text-sm line-clamp-1 group-hover:text-brand-500 transition-colors">${drama.title}</h4>
+                            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">${drama.genre}</p>
                         </div>
-                        <div class="flex items-center justify-between text-[11px] text-slate-400 mt-2 pt-2 border-t border-slate-800/60">
-                            <span class="text-amber-400 font-semibold"><i data-lucide="star" class="w-3 h-3 inline fill-amber-400"></i> ${drama.rating}</span>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 pt-2 border-t border-slate-800/60 font-semibold">
+                            <span class="text-amber-400 flex items-center gap-1"><i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> ${drama.rating}</span>
                             <span>${drama.totalEps} Eps</span>
                         </div>
                     </div>
@@ -538,15 +796,16 @@
 
             renderPaginationControls(totalPages);
             lucide.createIcons();
-        }
+        };
 
+        // Render Pagination UI
         window.renderPaginationControls = function(totalPages) {
             const container = document.getElementById('paginationContainer');
             container.innerHTML = '';
             if (totalPages <= 1) return;
 
             const prevBtn = document.createElement('button');
-            prevBtn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold border ${window.currentPaginationPage === 1 ? 'bg-slate-900 text-slate-600 border-slate-900 cursor-not-allowed' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+            prevBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${window.currentPaginationPage === 1 ? 'opacity-40 cursor-not-allowed input-themed' : 'input-themed hover:border-brand-500/50'}`;
             prevBtn.innerText = 'Prev';
             prevBtn.disabled = window.currentPaginationPage === 1;
             prevBtn.onclick = () => {
@@ -560,7 +819,7 @@
 
             for (let i = 1; i <= totalPages; i++) {
                 const pageBtn = document.createElement('button');
-                pageBtn.className = `w-9 h-9 rounded-xl text-xs font-bold border transition-all ${window.currentPaginationPage === i ? 'bg-rose-600 text-white border-rose-500 shadow-lg shadow-rose-600/30' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+                pageBtn.className = `w-8 h-8 rounded-xl text-xs font-bold border transition-all ${window.currentPaginationPage === i ? 'bg-brand-600 text-white border-brand-500 shadow-md' : 'input-themed hover:border-brand-500/50'}`;
                 pageBtn.innerText = i;
                 pageBtn.onclick = () => {
                     window.currentPaginationPage = i;
@@ -571,7 +830,7 @@
             }
 
             const nextBtn = document.createElement('button');
-            nextBtn.className = `px-3.5 py-2 rounded-xl text-xs font-semibold border ${window.currentPaginationPage === totalPages ? 'bg-slate-900 text-slate-600 border-slate-900 cursor-not-allowed' : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'}`;
+            nextBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold border transition-all ${window.currentPaginationPage === totalPages ? 'opacity-40 cursor-not-allowed input-themed' : 'input-themed hover:border-brand-500/50'}`;
             nextBtn.innerText = 'Next';
             nextBtn.disabled = window.currentPaginationPage === totalPages;
             nextBtn.onclick = () => {
@@ -582,8 +841,9 @@
                 }
             };
             container.appendChild(nextBtn);
-        }
+        };
 
+        // Modal Video Player Controls
         window.openDramaDetail = function(id) {
             window.currentDramaId = id;
             const drama = window.dramasData[id];
@@ -597,12 +857,12 @@
             const firstEp = Object.keys(episodes).sort((a,b)=>a-b)[0] || 1;
             playEpisode(id, Number(firstEp));
             renderEpisodesModalGrid(drama);
-        }
+        };
 
         window.closeModal = function() {
             document.getElementById('dramaModal').classList.add('hidden');
             document.getElementById('embedPlayer').src = '';
-        }
+        };
 
         window.playEpisode = function(dramaId, epNum) {
             window.currentDramaId = dramaId;
@@ -622,10 +882,10 @@
                 iframe.src = url;
             } else {
                 iframe.src = '';
-                alert('No video link uploaded for Episode ' + epNum + ' yet!');
+                alert('No streaming link uploaded for Episode ' + epNum + ' yet!');
             }
             renderEpisodesModalGrid(drama);
-        }
+        };
 
         window.navigateEpisode = function(direction) {
             const drama = window.dramasData[window.currentDramaId];
@@ -634,7 +894,7 @@
             if(nextEp >= 1 && nextEp <= drama.totalEps) {
                 playEpisode(drama.id, nextEp);
             }
-        }
+        };
 
         window.renderEpisodesModalGrid = function(drama) {
             const grid = document.getElementById('episodesGrid');
@@ -642,13 +902,14 @@
             for(let i=1; i<=drama.totalEps; i++) {
                 const hasLink = drama.episodes && drama.episodes[i];
                 const btn = document.createElement('button');
-                btn.className = `py-2 rounded-lg text-xs font-bold transition-all border ${window.currentEpNum === i ? 'bg-rose-600 text-white border-rose-500 shadow-lg' : hasLink ? 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-700' : 'bg-slate-950 text-slate-600 border-slate-900'}`;
+                btn.className = `py-2 rounded-xl text-xs font-bold transition-all border ${window.currentEpNum === i ? 'bg-brand-600 text-white border-brand-500 shadow-lg' : hasLink ? 'input-themed text-slate-200 hover:border-brand-500/50' : 'opacity-40 input-themed'}`;
                 btn.innerText = i;
                 btn.onclick = () => playEpisode(drama.id, i);
                 grid.appendChild(btn);
             }
-        }
+        };
 
+        // Create New Show
         window.handleCreateDrama = function(e) {
             e.preventDefault();
             const title = document.getElementById('addTitle').value;
@@ -667,8 +928,9 @@
                 document.getElementById('newDramaForm').reset();
                 window.setActiveTab('all');
             });
-        }
+        };
 
+        // Admin Filter & Dropdown Population
         window.populateAdminDropdowns = function() {
             const select = document.getElementById('targetDramaSelect');
             const catFilter = document.getElementById('adminCategoryFilter')?.value || 'all';
@@ -679,12 +941,8 @@
 
             let list = Object.values(window.dramasData);
 
-            if (catFilter !== 'all') {
-                list = list.filter(d => d.category === catFilter);
-            }
-            if (searchVal) {
-                list = list.filter(d => d.title.toLowerCase().includes(searchVal));
-            }
+            if (catFilter !== 'all') list = list.filter(d => d.category === catFilter);
+            if (searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal));
 
             if(list.length === 0) {
                 const opt = document.createElement('option');
@@ -702,7 +960,7 @@
                 select.appendChild(opt);
             });
             onTargetDramaChange();
-        }
+        };
 
         window.onTargetDramaChange = function() {
             const dramaId = document.getElementById('targetDramaSelect')?.value;
@@ -715,13 +973,14 @@
                 const row = document.createElement('div');
                 row.className = 'flex items-center gap-2';
                 row.innerHTML = `
-                    <span class="w-12 text-xs font-bold text-slate-400">Ep ${i}</span>
-                    <input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="Paste Embed or YouTube URL..." class="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-200">
+                    <span class="w-12 text-xs font-bold text-slate-400 shrink-0">Ep ${i}</span>
+                    <input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="Paste Embed or YouTube URL..." class="flex-1 text-xs font-medium px-3 py-2 rounded-xl input-themed">
                 `;
                 container.appendChild(row);
             }
-        }
+        };
 
+        // Save Episode Video Embed Links
         window.saveEpisodeLinks = function() {
             const dramaId = document.getElementById('targetDramaSelect').value;
             const drama = window.dramasData[dramaId];
@@ -739,8 +998,9 @@
                 status.classList.remove('hidden');
                 setTimeout(() => status.classList.add('hidden'), 3000);
             });
-        }
+        };
 
+        // Edit Modal Handlers
         window.openEditModalCurrent = function() {
             const dramaId = document.getElementById('targetDramaSelect')?.value;
             const drama = window.dramasData[dramaId];
@@ -755,11 +1015,11 @@
             document.getElementById('editDesc').value = drama.desc || '';
 
             document.getElementById('editModal').classList.remove('hidden');
-        }
+        };
 
         window.closeEditModal = function() {
             document.getElementById('editModal').classList.add('hidden');
-        }
+        };
 
         window.handleUpdateDrama = function(e) {
             e.preventDefault();
@@ -779,8 +1039,9 @@
                 alert('Show updated successfully!');
                 closeEditModal();
             });
-        }
+        };
 
+        // Delete Show Handler
         window.deleteCurrentShow = function() {
             const dramaId = document.getElementById('targetDramaSelect')?.value;
             const drama = window.dramasData[dramaId];
@@ -791,7 +1052,7 @@
                     alert('Show deleted successfully!');
                 });
             }
-        }
+        };
 
         lucide.createIcons();
     </script>
