@@ -70,7 +70,7 @@
                     <button id="nav-favorites" onclick="setActiveTab('favorites')" class="nav-btn px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1">
                         <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i> Favorites
                     </button>
-                    
+
                     <button id="nav-upload" onclick="setActiveTab('upload')" class="nav-btn hidden px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 flex items-center gap-1">
                         <i data-lucide="upload-cloud" class="w-3.5 h-3.5"></i> Admin
                     </button>
@@ -82,7 +82,7 @@
                         <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
                             <i data-lucide="search" class="w-3.5 h-3.5"></i>
                         </div>
-                        <input type="text" id="searchInput" oninput="currentPaginationPage=1; renderCatalog()" placeholder="Search..." 
+                        <input type="text" id="searchInput" oninput="currentPaginationPage=1; renderCatalog()" placeholder="Search..."
                             class="w-full pl-8 pr-3 py-1.5 bg-slate-900/90 border border-slate-700/60 rounded-full text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-rose-500">
                     </div>
 
@@ -152,7 +152,7 @@
             </div>
 
             <div id="dramaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"></div>
-            
+
             <div id="paginationContainer" class="flex items-center justify-center gap-2 pt-4"></div>
 
             <div id="emptyState" class="hidden text-center py-12 bg-slate-900/40 rounded-2xl border border-dashed border-slate-800 p-4">
@@ -216,7 +216,10 @@
                 </div>
 
                 <div class="lg:col-span-7 glass-panel rounded-2xl p-4 sm:p-6 border border-slate-800 space-y-4">
-                    <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">Step 2: Upload Embed Links</h3>
+                    <h3 class="text-sm font-bold text-white border-b border-slate-800 pb-2">Step 2: Upload Embed / Telegram Stream Links</h3>
+                    <p class="text-[11px] text-slate-400">
+                        Supported: YouTube / embed links, direct .mp4 links, and Telegram stream-server links (https://your-server/stream/...).
+                    </p>
                     <div class="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800 space-y-2">
                         <div class="grid grid-cols-2 gap-2">
                             <select id="adminCategoryFilter" onchange="populateAdminDropdowns()" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
@@ -293,7 +296,12 @@
             </div>
             <div class="overflow-y-auto p-4 space-y-4 flex-1">
                 <div class="relative w-full bg-black rounded-xl overflow-hidden border border-slate-800 aspect-video flex items-center justify-center">
-                    <iframe id="embedPlayer" class="w-full h-full" src="" frameborder="0" allowfullscreen></iframe>
+                    <!-- Embed player (YouTube / other embeds) -->
+                    <iframe id="embedPlayer" class="w-full h-full" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                    <!-- Direct video player (.mp4 / Telegram stream server) -->
+                    <video id="videoPlayer" class="hidden w-full h-full bg-black" controls playsinline preload="metadata"></video>
+                    <!-- Error message -->
+                    <div id="playerError" class="hidden absolute inset-0 bg-black/85 p-6 pt-[18%] text-center text-xs text-slate-300 leading-relaxed"></div>
                 </div>
                 <div class="flex items-center justify-between bg-slate-950 p-2.5 rounded-xl border border-slate-800">
                     <button onclick="navigateEpisode(-1)" class="px-3 py-1 bg-slate-800 text-xs text-slate-300 rounded-lg">Prev</button>
@@ -343,14 +351,21 @@
             const savedTheme = localStorage.getItem('dramahub_theme') || 'dark';
             document.getElementById('themeSelector').value = savedTheme;
             changeTheme(savedTheme, false);
+
+            // Show a friendly message if the video can't be loaded
+            const video = document.getElementById('videoPlayer');
+            video.addEventListener('error', () => {
+                if (!video.getAttribute('src')) return;
+                showPlayerError('Cannot play this video.\n\nCheck that:\n• the stream server is running and uses HTTPS\n• the file is .mp4 (H.264 + AAC)\n• the link is correct');
+            });
         });
 
         window.changeTheme = function(theme, save = true) {
             const body = document.getElementById('bodyTheme');
             if (save) localStorage.setItem('dramahub_theme', theme);
-            
+
             body.className = "min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white overflow-x-hidden";
-            
+
             if (theme === 'pink') {
                 body.style.backgroundColor = '#1a0f14';
                 body.style.color = '#fce7f3';
@@ -422,7 +437,7 @@
             window.currentPaginationPage = 1;
             document.getElementById('catalogSection').classList.toggle('hidden', tab === 'upload');
             document.getElementById('uploadSection').classList.toggle('hidden', tab !== 'upload');
-            
+
             const titleEl = document.getElementById('sectionTitle');
             if(tab === 'favorites') {
                 titleEl.innerHTML = `Favorite Shows <span id="dramaCount" class="text-xs font-normal px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">0</span>`;
@@ -543,20 +558,89 @@
             renderEpisodesModalGrid(drama);
         }
 
+        // ---------- Player helpers ----------
+        function showPlayerError(msg) {
+            const el = document.getElementById('playerError');
+            el.innerText = msg;
+            el.classList.remove('hidden');
+        }
+
+        function resetPlayers() {
+            const iframe = document.getElementById('embedPlayer');
+            const video = document.getElementById('videoPlayer');
+            const err = document.getElementById('playerError');
+            err.classList.add('hidden');
+            err.innerText = '';
+            video.pause();
+            video.removeAttribute('src');
+            video.load();
+            video.classList.add('hidden');
+            iframe.src = '';
+            iframe.classList.add('hidden');
+        }
+
         window.closeModal = function() {
             document.getElementById('dramaModal').classList.add('hidden');
-            document.getElementById('embedPlayer').src = '';
+            resetPlayers();
+        }
+
+        // Convert normal page links into embeddable player links
+        function toEmbedUrl(url) {
+            try {
+                const u = new URL(url);
+                const host = u.hostname.replace(/^(www|m)\./, '');
+                if (host === 'youtu.be') {
+                    const id = u.pathname.split('/')[1];
+                    if (id) return `https://www.youtube.com/embed/${id}`;
+                }
+                if (host === 'youtube.com') {
+                    if (u.pathname === '/watch' && u.searchParams.get('v')) {
+                        return `https://www.youtube.com/embed/${u.searchParams.get('v')}`;
+                    }
+                    if (u.pathname.startsWith('/shorts/')) {
+                        return `https://www.youtube.com/embed/${u.pathname.split('/')[2]}`;
+                    }
+                }
+                if (host === 'ok.ru') {
+                    const m = u.pathname.match(/^\/video\/(\d+)/);
+                    if (m) return `https://ok.ru/videoembed/${m[1]}`;
+                }
+            } catch (e) { /* not a valid URL, use as-is */ }
+            return url;
         }
 
         window.playEpisode = function(dramaId, epNum) {
             window.currentDramaId = dramaId;
             window.currentEpNum = epNum;
             const drama = window.dramasData[dramaId];
-            let url = drama.episodes?.[epNum] || '';
+            let url = (drama.episodes?.[epNum] || '').trim();
             document.getElementById('currentEpisodeLabel').innerText = `Episode ${epNum}`;
+
             const iframe = document.getElementById('embedPlayer');
-            if(url.includes('watch?v=')) url = url.replace('watch?v=', 'embed/');
-            iframe.src = url;
+            const video = document.getElementById('videoPlayer');
+            resetPlayers();
+
+            if (!url) {
+                showPlayerError('No link added for this episode yet.');
+            } else if (/^https?:\/\/t\.me\/c\//i.test(url)) {
+                // Private Telegram link: cannot be embedded
+                showPlayerError('Private Telegram links cannot be embedded.\n\nUse your stream-server link instead\n(https://your-server/stream/...).');
+            } else if (/^https?:\/\/t\.me\//i.test(url)) {
+                // Public Telegram post -> official embed widget
+                if (!url.includes('embed=1')) url += (url.includes('?') ? '&' : '?') + 'embed=1&mode=tme';
+                iframe.src = url;
+                iframe.classList.remove('hidden');
+            } else if (/\.(mp4|webm|ogg)(\?|$)/i.test(url) || /\/(stream|dl)\//i.test(url)) {
+                // Direct video file or Telegram stream server -> <video>
+                video.src = url;
+                video.classList.remove('hidden');
+                video.load();
+                video.play().catch(() => {}); // autoplay may be blocked; user can press play
+            } else {
+                // YouTube (watch / youtu.be / shorts), ok.ru and other embed links
+                iframe.src = toEmbedUrl(url);
+                iframe.classList.remove('hidden');
+            }
             renderEpisodesModalGrid(drama);
         }
 
@@ -606,7 +690,7 @@
             let list = Object.values(window.dramasData);
             if(catFilter !== 'all') list = list.filter(d => d.category === catFilter);
             if(searchVal) list = list.filter(d => d.title.toLowerCase().includes(searchVal));
-            
+
             list.forEach(drama => {
                 const opt = document.createElement('option');
                 opt.value = drama.id;
@@ -625,7 +709,7 @@
             for(let i=1; i<=drama.totalEps; i++) {
                 const row = document.createElement('div');
                 row.className = 'flex items-center gap-2';
-                row.innerHTML = `<span class="w-10 text-[11px] text-slate-400">Ep ${i}</span><input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="URL..." class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200">`;
+                row.innerHTML = `<span class="w-10 text-[11px] text-slate-400">Ep ${i}</span><input type="url" id="epInput_${i}" value="${drama.episodes?.[i] || ''}" placeholder="YouTube / .mp4 / Telegram stream URL..." class="flex-1 bg-slate-950 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200">`;
                 container.appendChild(row);
             }
         }
